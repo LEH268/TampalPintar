@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="web">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>TampalPintar — Government Dashboard</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Maps JavaScript API bootstrap loader, verbatim from docs/TampalPintar_Guide.md §4. -->
+  <script>
+    (g => {
+      var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;
+      b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>
+        h||(h=new Promise(async (f,n)=>{await (a=m.createElement("script"));
+        e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);
+        e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;
+        a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";
+        m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n));
+    })({key: "AIzaSyAWRhrGlvOUJoWT3tmp1BJxRYwON5t-UIA", v: "weekly"});
+
+    // 3D map + pin bridge shared logic. The HtmlElementView-mounted div
+    // (see lib/map/js_map_web.dart) is created dynamically by Flutter's
+    // platform-view system, so initMap3D polls (bounded, via
+    // requestAnimationFrame) for its container id instead of assuming it
+    // already exists in the DOM -- Flutter attaches the element
+    // asynchronously relative to when the view factory runs.
+    let map3d;
+    let Marker3DInteractiveElement;
+    const markers = {};
+    let pinTapHandler = null;
+    let pendingPins = null;
+
+    function initMap3D(containerId, attempt) {
+      const container = document.getElementById(containerId);
+      if (!container) {
+        if ((attempt || 0) > 100) { console.error('map container never appeared:', containerId); return; }
+        requestAnimationFrame(() => initMap3D(containerId, (attempt || 0) + 1));
+        return;
+      }
+      mountMap3D(container);
+    }
+
+    async function mountMap3D(container) {
+      const lib = await google.maps.importLibrary("maps3d");
+      Marker3DInteractiveElement = lib.Marker3DInteractiveElement;
+      map3d = new lib.Map3DElement({
+        center: { lat: 3.1390, lng: 101.6869, altitude: 0 },
+        range: 40000,
+        tilt: 60,
+        mode: 'HYBRID',
+      });
+      container.append(map3d);
+      if (pendingPins) { updatePins(pendingPins); pendingPins = null; }
+    }
+
+    function updatePins(pinsJson) {
+      const pins = typeof pinsJson === 'string' ? JSON.parse(pinsJson) : pinsJson;
+      if (!map3d) { pendingPins = pins; return; }
+      const seen = new Set();
+      for (const p of pins) {
+        seen.add(p.id);
+        if (!markers[p.id]) {
+          const marker = new Marker3DInteractiveElement({ position: { lat: p.lat, lng: p.lng, altitude: 0 } });
+          marker.addEventListener('gmp-click', () => { if (pinTapHandler) pinTapHandler(p.id); });
+          map3d.append(marker);
+          markers[p.id] = marker;
+        }
+      }
+      for (const id of Object.keys(markers)) {
+        if (!seen.has(id)) { markers[id].remove(); delete markers[id]; }
+      }
+    }
+
+    function setPinTapHandler(handler) { pinTapHandler = handler; }
+  </script>
+</head>
+<body>
+  <!--
+    You can customize the "flutter_bootstrap.js" script.
+    This is useful to provide a custom configuration to the Flutter loader
+    or to give the user feedback during the initialization process.
+
+    For more details:
+    * https://docs.flutter.dev/platform-integration/web/initialization
+  -->
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

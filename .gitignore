@@ -1,2 +1,5 @@
 # Ignore markdown file containing system credentials and API keys
 docs/TampalPintar_Guide.md
+
+# Accidental symlink to the user's home directory — never commit
+Chan

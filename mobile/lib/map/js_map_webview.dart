@@ -1,15 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../models/pothole.dart';
 import 'map_html.dart';
 
-/// Renders the shared 3D map inside an Android WebView (PRD §4's
-/// JsMapWebView pattern) and keeps its pins in sync with [pins] via a JS
-/// bridge: Dart -> JS through `updatePins(...)`, JS -> Dart through the
-/// `FlutterBridge` channel on marker tap.
 class JsMapWebView extends StatefulWidget {
   const JsMapWebView({super.key, required this.apiKey, required this.pins, required this.onPinTap});
 
@@ -22,13 +19,20 @@ class JsMapWebView extends StatefulWidget {
 }
 
 class _JsMapWebViewState extends State<JsMapWebView> {
-  late final WebViewController _controller;
+  // Use a nullable controller to guarantee it is NEVER initialized on Web
+  WebViewController? _controller;
   bool _pageLoaded = false;
-  String? _loadError; // UI-only, no logic change to existing flow
+  String? _loadError;
 
   @override
   void initState() {
     super.initState();
+    
+    // Completely bypass WebView initialization if running on Chrome
+    if (kIsWeb) {
+      return;
+    }
+
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel(
@@ -38,11 +42,15 @@ class _JsMapWebViewState extends State<JsMapWebView> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (_) {
-            setState(() => _pageLoaded = true);
-            _pushPins();
+            if (mounted) {
+              setState(() => _pageLoaded = true);
+              _pushPins();
+            }
           },
           onWebResourceError: (error) {
-            setState(() => _loadError = error.description);
+            if (mounted) {
+              setState(() => _loadError = error.description);
+            }
           },
         ),
       )
@@ -52,29 +60,62 @@ class _JsMapWebViewState extends State<JsMapWebView> {
   @override
   void didUpdateWidget(covariant JsMapWebView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (_pageLoaded && widget.pins != oldWidget.pins) _pushPins();
+    if (!kIsWeb && _pageLoaded && widget.pins != oldWidget.pins) {
+      _pushPins();
+    }
   }
 
   void _pushPins() {
+    if (kIsWeb || _controller == null) return;
     final payload = jsonEncode(
       widget.pins.map((p) => {'id': p.id, 'lat': p.lat, 'lng': p.lng}).toList(),
     );
-    _controller.runJavaScript('updatePins($payload)');
+    _controller!.runJavaScript('updatePins($payload)');
   }
 
   void _retry() {
+    if (kIsWeb || _controller == null) return;
     setState(() {
       _loadError = null;
       _pageLoaded = false;
     });
-    _controller.loadHtmlString(buildMapHtml(widget.apiKey));
+    _controller!.loadHtmlString(buildMapHtml(widget.apiKey));
   }
 
   @override
   Widget build(BuildContext context) {
+    // Graceful fallback UI when running the Mobile app on Chrome
+    if (kIsWeb) {
+      return Container(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        child: const Center(
+          child: Padding(
+            padding: EdgeInsets.all(32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.public_off_rounded, size: 48, color: Colors.grey),
+                SizedBox(height: 16),
+                Text(
+                  'Map WebView is for Android/iOS only.',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'You are running the "mobile" project on Chrome. To test map features, run the "web" project instead.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black54, fontSize: 14),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Stack(
       children: [
-        WebViewWidget(controller: _controller),
+        if (_controller != null) WebViewWidget(controller: _controller!),
         if (!_pageLoaded && _loadError == null)
           Container(
             color: Theme.of(context).scaffoldBackgroundColor,

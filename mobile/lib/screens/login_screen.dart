@@ -13,23 +13,39 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isSignUp = false;
   bool _loading = false;
-  bool _obscurePassword = true; // UI-only, no logic change
+  bool _obscurePassword = true;
   String? _error;
 
   Future<void> _submit() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() => _error = 'Email and password cannot be empty.');
+      return;
+    }
+    
+    if (_isSignUp && password.length < 6) {
+      setState(() => _error = 'Password must be at least 6 characters long.');
+      return;
+    }
+
     setState(() {
       _loading = true;
       _error = null;
     });
+    
     try {
       final auth = Supabase.instance.client.auth;
       if (_isSignUp) {
-        await auth.signUp(email: _emailController.text.trim(), password: _passwordController.text);
+        await auth.signUp(email: email, password: password);
       } else {
-        await auth.signInWithPassword(email: _emailController.text.trim(), password: _passwordController.text);
+        await auth.signInWithPassword(email: email, password: password);
       }
     } on AuthException catch (e) {
       setState(() => _error = e.message);
+    } catch (e) {
+      setState(() => _error = 'An unexpected error occurred.');
     } finally {
       if (mounted) setState(() => _loading = false);
     }

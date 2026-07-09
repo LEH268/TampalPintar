@@ -46,14 +46,17 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _loadPotholes() async {
-    final rows = await _supabase.from('potholes').select();
-    if (!mounted) return;
-    setState(() => _potholes = rows.map(Pothole.fromJson).toList());
+    try {
+      final rows = await _supabase.from('potholes').select();
+      if (!mounted) return;
+      setState(() => _potholes = rows.map(Pothole.fromJson).toList());
+    } catch (e) {
+      if (mounted) {
+        _showMessage('Failed to load map data. Please check your network connection.');
+      }
+    }
   }
 
-  // Fixed rows stay in _potholes (Realtime needs to still see them to
-  // deliver the fix-transition event at all -- see migration 0009) but are
-  // filtered out of what's actually drawn on the map.
   List<Pothole> get _activePins => _potholes.where((p) => p.status != 'fixed').toList();
 
   Pothole? _findPothole(String id) {

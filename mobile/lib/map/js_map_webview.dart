@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../models/pothole.dart';
@@ -24,6 +24,7 @@ class JsMapWebView extends StatefulWidget {
 class _JsMapWebViewState extends State<JsMapWebView> {
   late final WebViewController _controller;
   bool _pageLoaded = false;
+  String? _loadError; // UI-only, no logic change to existing flow
 
   @override
   void initState() {
@@ -37,8 +38,11 @@ class _JsMapWebViewState extends State<JsMapWebView> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (_) {
-            _pageLoaded = true;
+            setState(() => _pageLoaded = true);
             _pushPins();
+          },
+          onWebResourceError: (error) {
+            setState(() => _loadError = error.description);
           },
         ),
       )
@@ -58,6 +62,69 @@ class _JsMapWebViewState extends State<JsMapWebView> {
     _controller.runJavaScript('updatePins($payload)');
   }
 
+  void _retry() {
+    setState(() {
+      _loadError = null;
+      _pageLoaded = false;
+    });
+    _controller.loadHtmlString(buildMapHtml(widget.apiKey));
+  }
+
   @override
-  Widget build(BuildContext context) => WebViewWidget(controller: _controller);
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        WebViewWidget(controller: _controller),
+        if (!_pageLoaded && _loadError == null)
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(strokeWidth: 2.5),
+                  SizedBox(height: 12),
+                  Text('Loading map...', style: TextStyle(fontSize: 13)),
+                ],
+              ),
+            ),
+          ),
+        if (_loadError != null)
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.wifi_off_rounded, size: 40, color: Colors.grey.shade400),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Failed to load the map',
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      _loadError!,
+                      style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 16),
+                    OutlinedButton.icon(
+                      onPressed: _retry,
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
 }

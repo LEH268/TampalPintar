@@ -130,18 +130,82 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TampalPintar'),
+        elevation: 0,
+        title: const Text('TampalPintar', style: TextStyle(fontWeight: FontWeight.w600)),
         actions: [
-          IconButton(onPressed: () => _supabase.auth.signOut(), icon: const Icon(Icons.logout)),
+          IconButton(
+            tooltip: 'Log out',
+            onPressed: () => _supabase.auth.signOut(),
+            icon: const Icon(Icons.logout),
+          ),
+          const SizedBox(width: 4),
         ],
       ),
-      body: JsMapWebView(apiKey: mapsApiKey, pins: _activePins, onPinTap: _onPinTap),
+      body: Stack(
+        children: [
+          JsMapWebView(apiKey: mapsApiKey, pins: _activePins, onPinTap: _onPinTap),
+          Positioned(
+            top: 12,
+            left: 12,
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.location_on, size: 16, color: scheme.primary),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${_activePins.length} active report${_activePins.length == 1 ? '' : 's'}',
+                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          if (_potholes.isEmpty)
+            IgnorePointer(
+              child: Center(
+                child: Card(
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.map_outlined, size: 36, color: Colors.grey.shade400),
+                        const SizedBox(height: 8),
+                        Text(
+                          'No potholes reported yet',
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: scheme.primary,
+        foregroundColor: Colors.white,
+        elevation: 3,
         onPressed: _submitting ? null : _report,
         icon: _submitting
-            ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
+            ? const SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+              )
             : const Icon(Icons.camera_alt),
         label: Text(_submitting ? 'Submitting...' : 'Report'),
       ),

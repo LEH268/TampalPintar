@@ -77,52 +77,140 @@ class _PotholeDetailPanelState extends State<PotholeDetailPanel> {
         () => Supabase.instance.client.rpc('mark_pothole_fixed', params: {'p_pothole_id': widget.pothole.id}),
       );
 
+  Widget _buildStatusChip(String label, Color color, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        border: Border.all(color: color.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 4),
+          Text(label, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 13)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String text, {bool isTitle = false, bool isSmall = false}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: isSmall ? 16 : 20, color: Colors.grey[600]),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: isSmall ? 13 : (isTitle ? 16 : 14),
+              fontWeight: isTitle ? FontWeight.w600 : FontWeight.normal,
+              color: isSmall ? Colors.grey[600] : Colors.black87,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = widget.pothole;
     final isAssigned = p.status == 'assigned';
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(p.photoUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Chip(label: Text('Risk ${p.riskScore}%')),
-                const SizedBox(width: 8),
-                Chip(label: Text(isAssigned ? 'Assigned' : 'Not Assigned')),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text('Open for ${formatOpenFor(p.reportedAt)}', style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
-            Text(p.riskRationale),
-            const SizedBox(height: 8),
-            Text('${roadTypeLabels[p.roadType] ?? p.roadType} • ${roleLabels[p.assignedRole] ?? p.assignedRole}'),
-            const SizedBox(height: 4),
-            Text(
-              '${p.lat.toStringAsFixed(5)}, ${p.lng.toStringAsFixed(5)}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: _busy || isAssigned ? null : _assign,
-              child: Text(isAssigned ? 'Assigned' : 'Not Assigned → Assign'),
-            ),
-            const SizedBox(height: 8),
-            FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: isAssigned ? Colors.green : Colors.grey),
-              onPressed: _busy || !isAssigned ? null : _complete,
-              child: const Text('Complete'),
-            ),
-          ],
+    final riskColor = p.riskScore >= 70 ? Colors.red : (p.riskScore >= 40 ? Colors.orange : Colors.green);
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(p.photoUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
+              ),
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  _buildStatusChip('Risk ${p.riskScore}%', riskColor, Icons.warning_amber_rounded),
+                  const SizedBox(width: 8),
+                  _buildStatusChip(
+                    isAssigned ? 'Assigned' : 'Not Assigned',
+                    isAssigned ? Colors.blue : Colors.grey.shade600,
+                    isAssigned ? Icons.assignment_turned_in : Icons.assignment_late,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // detailed info rows
+              _buildInfoRow(Icons.access_time_rounded, 'Open for ${formatOpenFor(p.reportedAt)}', isTitle: true),
+              const SizedBox(height: 12),
+              _buildInfoRow(Icons.description_outlined, p.riskRationale),
+              const SizedBox(height: 12),
+              _buildInfoRow(
+                Icons.account_tree_outlined,
+                '${roadTypeLabels[p.roadType] ?? p.roadType} • ${roleLabels[p.assignedRole] ?? p.assignedRole}',
+              ),
+              const SizedBox(height: 12),
+              _buildInfoRow(
+                Icons.location_on_outlined,
+                '${p.lat.toStringAsFixed(5)}, ${p.lng.toStringAsFixed(5)}',
+                isSmall: true,
+              ),
+              const SizedBox(height: 24),
+              
+              const Divider(height: 1),
+              const SizedBox(height: 16),
+
+              // bottom action buttons: Assign / Complete
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  onPressed: _busy || isAssigned ? null : _assign,
+                  icon: const Icon(Icons.assignment_ind),
+                  label: Text(
+                    isAssigned ? 'Already Assigned' : 'Dispatch Assignment',
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    backgroundColor: isAssigned ? Colors.green : Colors.grey[300],
+                    foregroundColor: isAssigned ? Colors.white : Colors.grey[500],
+                  ),
+                  onPressed: _busy || !isAssigned ? null : _complete,
+                  icon: const Icon(Icons.done_all),
+                  label: const Text(
+                    'Complete Repair',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

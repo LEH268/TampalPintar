@@ -69,13 +69,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('TampalPintar — Government Dashboard'),
+        backgroundColor: Colors.white,
+        elevation: 2,
+        shadowColor: Colors.black12,
+        title: Row(
+          children: [
+            Icon(Icons.admin_panel_settings, color: Theme.of(context).colorScheme.primary),
+            const SizedBox(width: 12),
+            const Text(
+              'TampalPintar',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '| Dashboard',
+              style: TextStyle(color: Colors.grey[600], fontSize: 16),
+            ),
+          ],
+        ),
         actions: [
-          IconButton(onPressed: () => _supabase.auth.signOut(), icon: const Icon(Icons.logout)),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: TextButton.icon(
+              onPressed: () => _supabase.auth.signOut(),
+              icon: const Icon(Icons.logout, color: Colors.redAccent, size: 20),
+              label: const Text(
+                'Logout', 
+                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ],
       ),
-      body: JsMapWeb(pins: _activePins, onPinTap: _onPinTap),
+      // main content: map with pins
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Card(
+          elevation: 8, 
+          shadowColor: Colors.black26,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24), 
+          ),
+          clipBehavior: Clip.antiAlias, 
+          child: JsMapWeb(
+            pins: _activePins, 
+            onPinTap: _onPinTap,
+          ),
+        ),
+      ),
     );
   }
 }

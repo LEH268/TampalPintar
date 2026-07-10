@@ -95,15 +95,16 @@ class _MapScreenState extends State<MapScreen> {
           'lng': position.longitude,
         },
       );
-      _showMessage('Pothole reported.');
+      await _loadPotholes();
+      _showMessage('Report submitted! The new pin should appear on the map.', isError: false);
     } on FunctionException catch (e) {
       if (e.status == 409) {
-        _showMessage('A pothole was already reported within 10 meters of here.');
+        _showMessage('A recent report already exists nearby, so this spot was not submitted again.', isError: true);
       } else {
-        _showMessage('Report failed (${e.status}). Please try again.');
+        _showMessage('Report failed (${e.status}). Please try again.', isError: true);
       }
     } catch (e) {
-      _showMessage('Report failed: $e');
+      _showMessage('Report failed. Please check your connection and try again.', isError: true);
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -123,25 +124,35 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _showMessage(String text) {
+  void _showMessage(String text, {bool isError = true}) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        backgroundColor: isError ? Colors.red.shade700 : Colors.green.shade700,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TampalPintar'),
+        backgroundColor: Colors.deepOrange.shade700,
+        foregroundColor: Colors.white,
+        title: const Text('TampalPintar', style: TextStyle(fontWeight: FontWeight.w600)),
         actions: [
           IconButton(onPressed: () => _supabase.auth.signOut(), icon: const Icon(Icons.logout)),
         ],
       ),
-      body: JsMapWebView(apiKey: mapsApiKey, pins: _activePins, onPinTap: _onPinTap),
+      body: SafeArea(child: JsMapWebView(apiKey: mapsApiKey, pins: _activePins, onPinTap: _onPinTap)),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.deepOrange.shade700,
+        foregroundColor: Colors.white,
         onPressed: _submitting ? null : _report,
         icon: _submitting
-            ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
+            ? const SizedBox(height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
             : const Icon(Icons.camera_alt),
         label: Text(_submitting ? 'Submitting...' : 'Report'),
       ),

@@ -37,34 +37,44 @@ class _PotholeDetailSheetState extends State<PotholeDetailSheet> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(p.photoUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
-            ),
-            const SizedBox(height: 12),
-            Row(
+        child: Card(
+          elevation: 0,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Chip(label: Text('Risk ${p.riskScore}%')),
-                const SizedBox(width: 8),
-                Chip(label: Text(p.status == 'assigned' ? 'Assigned' : 'Not Assigned')),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(p.photoUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
+                ),
+                const SizedBox(height: 12),
+                Text('Pothole report', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepOrange.shade800)),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    Chip(label: Text('Risk ${p.riskScore}%')),
+                    Chip(label: Text(p.status == 'assigned' ? 'Assigned' : 'Not Assigned')),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text('Open for ${formatOpenFor(p.reportedAt)}', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Text(p.riskRationale, style: const TextStyle(color: Colors.black87)),
+                const SizedBox(height: 8),
+                Text('${roadTypeLabels[p.roadType] ?? p.roadType} • ${roleLabels[p.assignedRole] ?? p.assignedRole}'),
+                const SizedBox(height: 4),
+                Text(
+                  '${p.lat.toStringAsFixed(5)}, ${p.lng.toStringAsFixed(5)}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ],
             ),
-            const SizedBox(height: 8),
-            Text('Open for ${formatOpenFor(p.reportedAt)}', style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
-            Text(p.riskRationale),
-            const SizedBox(height: 8),
-            Text('${roadTypeLabels[p.roadType] ?? p.roadType} • ${roleLabels[p.assignedRole] ?? p.assignedRole}'),
-            const SizedBox(height: 4),
-            Text(
-              '${p.lat.toStringAsFixed(5)}, ${p.lng.toStringAsFixed(5)}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
+          ),
         ),
       ),
     );

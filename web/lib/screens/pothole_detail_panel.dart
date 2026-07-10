@@ -84,45 +84,56 @@ class _PotholeDetailPanelState extends State<PotholeDetailPanel> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(p.photoUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
-            ),
-            const SizedBox(height: 12),
-            Row(
+        child: Card(
+          elevation: 0,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Chip(label: Text('Risk ${p.riskScore}%')),
-                const SizedBox(width: 8),
-                Chip(label: Text(isAssigned ? 'Assigned' : 'Not Assigned')),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(p.photoUrl, height: 180, width: double.infinity, fit: BoxFit.cover),
+                ),
+                const SizedBox(height: 12),
+                Text('Pothole report', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepOrange.shade800)),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    Chip(label: Text('Risk ${p.riskScore}%')),
+                    Chip(label: Text(isAssigned ? 'Assigned' : 'Not Assigned')),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text('Open for ${formatOpenFor(p.reportedAt)}', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Text(p.riskRationale, style: const TextStyle(color: Colors.black87)),
+                const SizedBox(height: 8),
+                Text('${roadTypeLabels[p.roadType] ?? p.roadType} • ${roleLabels[p.assignedRole] ?? p.assignedRole}'),
+                const SizedBox(height: 4),
+                Text(
+                  '${p.lat.toStringAsFixed(4)}, ${p.lng.toStringAsFixed(4)} · ${roadTypeLabels[p.roadType] ?? p.roadType}',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: Colors.deepOrange.shade700),
+                  onPressed: _busy || isAssigned ? null : _assign,
+                  child: Text(isAssigned ? 'Assigned' : 'Not Assigned → Assign'),
+                ),
+                const SizedBox(height: 8),
+                FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: isAssigned ? Colors.green : Colors.grey),
+                  onPressed: _busy || !isAssigned ? null : _complete,
+                  child: const Text('Complete'),
+                ),
               ],
             ),
-            const SizedBox(height: 8),
-            Text('Open for ${formatOpenFor(p.reportedAt)}', style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
-            Text(p.riskRationale),
-            const SizedBox(height: 8),
-            Text('${roadTypeLabels[p.roadType] ?? p.roadType} • ${roleLabels[p.assignedRole] ?? p.assignedRole}'),
-            const SizedBox(height: 4),
-            Text(
-              '${p.lat.toStringAsFixed(5)}, ${p.lng.toStringAsFixed(5)}',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: _busy || isAssigned ? null : _assign,
-              child: Text(isAssigned ? 'Assigned' : 'Not Assigned → Assign'),
-            ),
-            const SizedBox(height: 8),
-            FilledButton(
-              style: FilledButton.styleFrom(backgroundColor: isAssigned ? Colors.green : Colors.grey),
-              onPressed: _busy || !isAssigned ? null : _complete,
-              child: const Text('Complete'),
-            ),
-          ],
+          ),
         ),
       ),
     );

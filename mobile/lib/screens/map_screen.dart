@@ -9,9 +9,12 @@ import '../map/js_map_webview.dart';
 import '../models/pothole.dart';
 import '../supabase_config.dart';
 import 'pothole_detail_sheet.dart';
+import 'report_success_screen.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  const MapScreen({super.key, this.initialPotholeId});
+
+  final String? initialPotholeId;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -27,6 +30,18 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     _loadPotholes();
+    if (widget.initialPotholeId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final pothole = _findPothole(widget.initialPotholeId!);
+        if (pothole != null) {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => PotholeDetailSheet(pothole: pothole),
+          );
+        }
+      });
+    }
     _channel = _supabase
         .channel('potholes-changes')
         .onPostgresChanges(
@@ -87,7 +102,7 @@ class _MapScreenState extends State<MapScreen> {
       if (position == null) return;
 
       final bytes = await image.readAsBytes();
-      await _supabase.functions.invoke(
+      final response = await _supabase.functions.invoke(
         'report-pothole',
         body: {
           'photoBase64': base64Encode(bytes),
@@ -96,7 +111,11 @@ class _MapScreenState extends State<MapScreen> {
         },
       );
       await _loadPotholes();
-      _showMessage('Report submitted! The new pin should appear on the map.', isError: false);
+      if (!mounted) return;
+      final reportId = response.data is Map ? response.data['id']?.toString() : null;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => ReportSuccessScreen(reportId: reportId)),
+      );
     } on FunctionException catch (e) {
       if (e.status == 409) {
         _showMessage('A recent report already exists nearby, so this spot was not submitted again.', isError: true);

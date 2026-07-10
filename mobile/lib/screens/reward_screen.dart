@@ -32,7 +32,7 @@ class RewardScreen extends StatelessWidget {
                   children: [
                     const Text('Available Points', style: TextStyle(color: Colors.white70, fontSize: 16)),
                     const SizedBox(height: 8),
-                    const Text('1,250', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold)),
+                    const Text('450', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     FilledButton.tonal(
                       onPressed: () {},
@@ -52,10 +52,10 @@ class RewardScreen extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              _buildVoucherCard(context, 'Touch \'n Go eWallet RM5', '150 pts', Icons.account_balance_wallet, true),
-              _buildVoucherCard(context, 'Grab Ride RM8', '200 pts', Icons.local_taxi, true),
-              _buildVoucherCard(context, 'Petronas RM10', '250 pts', Icons.local_gas_station, true),
-              _buildVoucherCard(context, 'Shopee RM15', '400 pts', Icons.shopping_bag, false),
+              _buildVoucherCard(context, 'Touch \'n Go eWallet RM5', '200 pts', 'assets/images/tng.png', true),
+              _buildVoucherCard(context, 'Grab Ride RM8', '200 pts', 'assets/images/grab.png', true),
+              _buildVoucherCard(context, 'Petronas Fuel RM10', '250 pts', 'assets/images/petronas.png', true),
+              _buildVoucherCard(context, 'Shopee Voucher RM15', '500 pts', 'assets/images/shopee.png', false),
             ]),
           ),
         ],
@@ -63,13 +63,28 @@ class RewardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildVoucherCard(BuildContext context, String title, String points, IconData icon, bool canAfford) {
+  Widget _buildVoucherCard(BuildContext context, String title, String points, String imagePath, bool canAfford) {
     return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-          child: Icon(icon, color: Theme.of(context).colorScheme.primary),
+        leading: Container(
+          height: 48,
+          width: 48,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => 
+                  Icon(Icons.card_giftcard, color: Theme.of(context).colorScheme.primary),
+            ),
+          ),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(points, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.w600)),

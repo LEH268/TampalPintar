@@ -23,6 +23,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // New Profile Header with Avatar
+          Center(
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 48,
+                  backgroundColor: scheme.primary.withOpacity(0.1),
+                  backgroundImage: const AssetImage('assets/images/avatar.png'),
+                  onBackgroundImageError: (exception, stackTrace) {}, // Fails gracefully
+                  child: const Align(
+                    alignment: Alignment.bottomRight,
+                    child: CircleAvatar(
+                      radius: 16,
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.edit, size: 16, color: Colors.blueGrey),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text('Citizen Account', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                const Text('Active Reporter', style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          
           Card(
             child: Padding(
               padding: const EdgeInsets.all(20),

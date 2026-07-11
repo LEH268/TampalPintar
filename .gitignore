@@ -1,0 +1,21 @@
+# Live secrets — used locally by CLI/seed/tests, never committed
+API Key Configuration.md
+
+# Local tool settings
+.claude/settings.local.json
+
+# CLI binary + local-only configs
+tools/bin/
+tools/backend_tests/test_config.json
+supabase/.temp/
+
+.superpowers
+docs
+Map Rendering Android.md
+Maps Demo Key.md
+Selangor_Pothole_Guide.md
+PRD.md
+tampal_pintar_onnx.md
+Voice Assistants.md
+TampalPintar.md
+CLAUDE.md

@@ -1,7 +1,14 @@
-# TampalPintar — Pothole Reporting for Selangor
+<div align="center">
+    <img src="website\assets\icon\app_icon.png" alt="TampalPintar Logo" width="200" height="200"/>
+    <h1>TampalPintar</h1>
+    <h3><em>Pothole Reporting for Selangor.</em></h3>
+</div>
 
-A pothole-reporting prototype for Selangor, Malaysia, made of four parts that
-share one Supabase backend:
+<p align="center">
+    <strong>A pothole-reporting project for Selangor, Malaysia.</strong>
+</p>
+
+This project is made of four parts that share one Supabase backend:
 
 - **`app/`** — Flutter Android app for citizens: photo reports, plus
   hands-free voice reports triggered by a custom "Tampal Pintar" wake word.

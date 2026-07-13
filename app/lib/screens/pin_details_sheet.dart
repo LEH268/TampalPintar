@@ -18,7 +18,7 @@ Future<void> showPinDetails(BuildContext context, String reportId) {
         if (snap.hasError) {
           return const SizedBox(
               height: 240,
-              child: Center(child: Text('Could not load report details.')));
+              child: Center(child: Text('Butiran laporan tidak dapat dimuatkan.')));
         }
         if (!snap.hasData) {
           return const SizedBox(
@@ -54,7 +54,7 @@ Future<void> showPinDetails(BuildContext context, String reportId) {
                   Icon(Icons.location_on_outlined,
                       size: 18, color: scheme.onSurfaceVariant),
                   const SizedBox(width: 6),
-                  Text('No photo — location-only report',
+                  Text('Tiada foto — laporan lokasi sahaja',
                       style: TextStyle(color: scheme.onSurfaceVariant)),
                 ]),
               const SizedBox(height: 14),
@@ -69,12 +69,12 @@ Future<void> showPinDetails(BuildContext context, String reportId) {
                       icon: Icons.warning_amber_rounded),
                   d.assigned
                       ? StatusPill(
-                          label: 'Assigned',
+                          label: 'Telah Ditugaskan',
                           bg: scheme.secondaryContainer,
                           fg: scheme.onSecondaryContainer,
                           icon: Icons.assignment_turned_in_outlined)
                       : StatusPill(
-                          label: 'Not assigned',
+                          label: 'Belum Ditugaskan',
                           bg: scheme.surfaceContainerHighest,
                           fg: scheme.onSurfaceVariant,
                           icon: Icons.assignment_outlined),
@@ -84,7 +84,7 @@ Future<void> showPinDetails(BuildContext context, String reportId) {
               _InfoRow(
                 icon: Icons.account_balance_outlined,
                 text:
-                    '${kRoadTypeLabels[d.roadType] ?? 'Road type pending'} · ${d.authorityName ?? 'Authority pending'}',
+                    '${kRoadTypeLabels[d.roadType] ?? 'Jenis jalan belum dikenal pasti'} · ${d.authorityName ?? 'Pihak berkuasa belum dikenal pasti'}',
               ),
               const SizedBox(height: 6),
               _InfoRow(
@@ -96,7 +96,7 @@ Future<void> showPinDetails(BuildContext context, String reportId) {
               _InfoRow(
                 icon: Icons.schedule_rounded,
                 text:
-                    'Reported ${DateFormat('d MMM y, h:mm a').format(d.reportedAt.toLocal())}',
+                    'Dilaporkan pada ${DateFormat('d MMM y, h:mm a', 'ms').format(d.reportedAt.toLocal())}',
               ),
               const SizedBox(height: 12),
               OpenForTicker(reportedAt: d.reportedAt),

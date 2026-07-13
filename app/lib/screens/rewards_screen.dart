@@ -44,16 +44,16 @@ class _RewardsScreenState extends State<RewardsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Confirm redemption'),
+        title: const Text('Sahkan penebusan'),
         content: Text(
-            'Spend ${item['points_cost']} points on ${item['name']}?'),
+            'Belanjakan ${item['points_cost']} mata untuk ${item['name']}?'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel')),
+              child: const Text('Batal')),
           FilledButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Redeem')),
+              child: const Text('Tebus')),
         ],
       ),
     );
@@ -66,12 +66,12 @@ class _RewardsScreenState extends State<RewardsScreen> {
         builder: (_) => AlertDialog(
           icon: Icon(Icons.celebration_rounded,
               color: Theme.of(context).colorScheme.tertiary, size: 32),
-          title: const Text('Voucher redeemed!'),
-          content: SelectableText('Your code: $code'),
+          title: const Text('Baucar berjaya ditebus!'),
+          content: SelectableText('Kod anda: $code'),
           actions: [
             FilledButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Done')),
+                child: const Text('Selesai')),
           ],
         ),
       );
@@ -79,7 +79,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Redemption failed: $e')));
+            .showSnackBar(SnackBar(content: Text('Penebusan gagal: $e')));
       }
     }
   }
@@ -113,14 +113,14 @@ class _RewardsScreenState extends State<RewardsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Spendable balance',
+                Text('Baki boleh dibelanjakan',
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
                         color: Colors.white.withValues(alpha: 0.75))),
                 const SizedBox(height: 2),
                 Text(
-                  '${NumberFormat.decimalPattern().format(_balance)} pts',
+                  '${NumberFormat.decimalPattern().format(_balance)} mata',
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
@@ -149,7 +149,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
         padding: const EdgeInsets.all(16),
         children: [
           _balanceCard(context),
-          const SectionHeader('Voucher catalog'),
+          const SectionHeader('Katalog baucar'),
           Card(
             child: Column(children: [
               for (final item in _catalog)
@@ -166,14 +166,14 @@ class _RewardsScreenState extends State<RewardsScreen> {
                         _balance >= (item['points_cost'] as num).toInt()
                             ? () => _redeem(item)
                             : null, // affordability-disabled
-                    child: Text('${item['points_cost']} pts'),
+                    child: Text('${item['points_cost']} mata'),
                   ),
                 ),
             ]),
           ),
-          const SectionHeader('My vouchers'),
+          const SectionHeader('Baucar saya'),
           if (_vouchers.isEmpty)
-            Text('Nothing redeemed yet.',
+            Text('Belum ada yang ditebus.',
                 style: TextStyle(color: scheme.onSurfaceVariant))
           else
             Card(
@@ -192,23 +192,23 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           fontWeight: FontWeight.w700, letterSpacing: 1),
                     ),
                     trailing: IconButton(
-                      tooltip: 'Copy code',
+                      tooltip: 'Salin kod',
                       icon: const Icon(Icons.copy_rounded, size: 20),
                       onPressed: () async {
                         await Clipboard.setData(
                             ClipboardData(text: v['code'] as String));
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Code copied')));
+                              const SnackBar(content: Text('Kod disalin')));
                         }
                       },
                     ),
                   ),
               ]),
             ),
-          const SectionHeader('Points history'),
+          const SectionHeader('Sejarah mata'),
           if (_history.isEmpty)
-            Text('No activity yet.',
+            Text('Tiada aktiviti lagi.',
                 style: TextStyle(color: scheme.onSurfaceVariant))
           else
             Card(

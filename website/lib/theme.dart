@@ -165,27 +165,27 @@ ThemeData buildGovTheme() {
     return (
       bg: const Color(0xFFE2E8F0),
       fg: const Color(0xFF475569),
-      label: 'Analysis pending',
+      label: 'Analisis dalam proses',
     );
   }
   if (score >= 80) {
     return (
       bg: const Color(0xFFFEE2E2),
       fg: const Color(0xFF991B1B),
-      label: 'Risk $score',
+      label: 'Risiko $score',
     );
   }
   if (score >= 50) {
     return (
       bg: const Color(0xFFFEF3C7),
       fg: const Color(0xFF92400E),
-      label: 'Risk $score',
+      label: 'Risiko $score',
     );
   }
   return (
     bg: const Color(0xFFD1FAE5),
     fg: const Color(0xFF065F46),
-    label: 'Risk $score',
+    label: 'Risiko $score',
   );
 }
 
@@ -263,6 +263,6 @@ class BrandMark extends StatelessWidget {
         width: size,
         height: size,
         filterQuality: FilterQuality.medium,
-        semanticLabel: 'TampalPintar logo',
+        semanticLabel: 'Logo TampalPintar',
       );
 }

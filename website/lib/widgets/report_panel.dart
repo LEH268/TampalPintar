@@ -6,16 +6,16 @@ import '../theme.dart';
 import '../utils/elapsed.dart';
 
 const kRoadTypeLabels = {
-  'highway_expressway': 'Highway/Expressway',
-  'federal_route': 'Federal Route',
-  'state_route': 'State Route',
-  'municipal_local': 'Municipal/Local Road',
+  'highway_expressway': 'Lebuh Raya/Ekspres',
+  'federal_route': 'Laluan Persekutuan',
+  'state_route': 'Laluan Negeri',
+  'municipal_local': 'Jalan Perbandaran/Tempatan',
 };
 const kAnswerLabels = {
-  'motorcycle': 'Motorcycle', 'car': 'Car', 'heavy_commercial': 'Heavy Commercial',
-  'left_slow': 'Left (slow)', 'middle': 'Middle', 'right_fast': 'Right (fast)',
-  'single_lane': 'Single-lane road',
-  'bump': 'Just a bump', 'swerve': 'Forced to swerve', 'damage': 'Hit hard — damaged',
+  'motorcycle': 'Motosikal', 'car': 'Kereta', 'heavy_commercial': 'Perdagangan Berat',
+  'left_slow': 'Kiri (perlahan)', 'middle': 'Tengah', 'right_fast': 'Kanan (laju)',
+  'single_lane': 'Jalan satu lorong',
+  'bump': 'Sekadar hentakan', 'swerve': 'Terpaksa mengelak', 'damage': 'Terkena kuat — rosak',
 };
 
 class ReportPanel extends StatefulWidget {
@@ -54,7 +54,7 @@ class _ReportPanelState extends State<ReportPanel> {
           actions: [
             TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel')),
+                child: const Text('Batal')),
             FilledButton(
                 onPressed: () => Navigator.pop(context, true),
                 child: Text(action)),
@@ -64,10 +64,11 @@ class _ReportPanelState extends State<ReportPanel> {
       true;
 
   Future<void> _assign() async {
-    final name = _r!['authority_name'] ?? 'the responsible authority';
-    if (!await _confirm('Confirm assignment',
-        'Assign this pothole to $name for repair? This cannot be undone.',
-        'Assign')) {
+    final name = _r!['authority_name'] ?? 'pihak berkuasa yang bertanggungjawab';
+    if (!await _confirm(
+        'Sahkan penugasan',
+        'Tugaskan lubang jalan ini kepada $name untuk dibaiki? Tindakan ini tidak boleh dibuat asal.',
+        'Tugaskan')) {
       return;
     }
     try {
@@ -77,17 +78,17 @@ class _ReportPanelState extends State<ReportPanel> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Could not assign: $e')));
+            .showSnackBar(SnackBar(content: Text('Tidak dapat menugaskan: $e')));
       }
     }
   }
 
   Future<void> _complete() async {
     if (!await _confirm(
-        'Confirm completion',
-        'Mark this pothole as fixed? Its pin disappears from every map and the '
-            'reporter is awarded points equal to the Risk Score.',
-        'Complete')) {
+        'Sahkan penyelesaian',
+        'Tandakan lubang jalan ini sebagai telah dibaiki? Pinnya akan hilang '
+            'daripada semua peta dan pelapor akan diberikan mata bersamaan Skor Risiko.',
+        'Selesaikan')) {
       return;
     }
     try {
@@ -97,7 +98,7 @@ class _ReportPanelState extends State<ReportPanel> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Could not complete: $e')));
+            .showSnackBar(SnackBar(content: Text('Tidak dapat menyelesaikan: $e')));
       }
     }
   }
@@ -143,9 +144,9 @@ class _ReportPanelState extends State<ReportPanel> {
                     size: 34, color: kSuccessGreen),
               ),
               const SizedBox(height: 16),
-              Text('Fixed', style: Theme.of(context).textTheme.titleMedium),
+              Text('Telah Dibaiki', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 6),
-              Text('Pin removed from all maps.',
+              Text('Pin dibuang daripada semua peta.',
                   style: TextStyle(color: scheme.onSurfaceVariant)),
             ],
           ),
@@ -158,9 +159,9 @@ class _ReportPanelState extends State<ReportPanel> {
     final factors = (r['factor_breakdown'] as List?) ?? [];
     final risk = riskStyle(r['risk_score'] as int?);
     final answers = {
-      'Vehicle Type': r['vehicle_type'],
-      'Lane Position': r['lane_position'],
-      'Impact Severity': r['impact_severity'],
+      'Jenis Kenderaan': r['vehicle_type'],
+      'Kedudukan Lorong': r['lane_position'],
+      'Tahap Impak': r['impact_severity'],
     };
     final reportedAt = DateTime.parse(r['reported_at']).toLocal();
 
@@ -187,7 +188,7 @@ class _ReportPanelState extends State<ReportPanel> {
                 size: 18, color: scheme.onSurfaceVariant),
             const SizedBox(width: 6),
             Expanded(
-              child: Text('Location-only report (no dashcam / photo).',
+              child: Text('Laporan lokasi sahaja (tiada dashcam / foto).',
                   style: TextStyle(color: scheme.onSurfaceVariant)),
             ),
           ]),
@@ -204,18 +205,18 @@ class _ReportPanelState extends State<ReportPanel> {
             _OpenFor(reportedAt: reportedAt),
           ],
         ),
-        const SectionHeader('Location'),
+        const SectionHeader('Lokasi'),
         _infoRow(
             Icons.account_balance_outlined,
-            '${kRoadTypeLabels[r['road_type']] ?? 'Road type pending'} · ${r['authority_name'] ?? 'authority pending'}',
+            '${kRoadTypeLabels[r['road_type']] ?? 'Jenis jalan belum dikenal pasti'} · ${r['authority_name'] ?? 'pihak berkuasa belum dikenal pasti'}',
             emphasize: true),
         _infoRow(Icons.place_outlined, '${r['lat']}, ${r['lng']}'),
         _infoRow(Icons.schedule_rounded,
-            'Reported ${DateFormat('d MMM y, h:mm a').format(reportedAt)}'),
+            'Dilaporkan pada ${DateFormat('d MMM y, h:mm a', 'ms').format(reportedAt)}'),
         if (r['speed_kmh'] != null)
           _infoRow(Icons.speed_rounded, '${r['speed_kmh']} km/h'),
         if (r['rationale'] != null || factors.isNotEmpty) ...[
-          const SectionHeader('AI analysis'),
+          const SectionHeader('Analisis AI'),
           if (r['rationale'] != null)
             Text(r['rationale'],
                 style: TextStyle(
@@ -259,7 +260,7 @@ class _ReportPanelState extends State<ReportPanel> {
               ),
           ],
         ],
-        const SectionHeader('Driver answers'),
+        const SectionHeader('Jawapan pemandu'),
         for (final e in answers.entries)
           Padding(
             padding: const EdgeInsets.only(bottom: 6),
@@ -273,7 +274,7 @@ class _ReportPanelState extends State<ReportPanel> {
               Expanded(
                 child: Text(
                   e.value == null
-                      ? 'skipped'
+                      ? 'dilangkau'
                       : (kAnswerLabels[e.value] ?? '${e.value}'),
                   style: TextStyle(
                     fontSize: 13.5,
@@ -298,7 +299,9 @@ class _ReportPanelState extends State<ReportPanel> {
                     ? Icons.assignment_turned_in_outlined
                     : Icons.assignment_outlined,
                 size: 19),
-            label: Text(assigned ? 'Assigned' : 'Assign to authority'),
+            label: Text(assigned
+                ? 'Telah Ditugaskan'
+                : 'Tugaskan kepada pihak berkuasa'),
           ),
         ),
         const SizedBox(height: 8),
@@ -308,7 +311,7 @@ class _ReportPanelState extends State<ReportPanel> {
             style: FilledButton.styleFrom(backgroundColor: kSuccessGreen),
             onPressed: assigned ? _complete : null, // disabled until assigned
             icon: const Icon(Icons.check_circle_outline_rounded, size: 19),
-            label: const Text('Complete — mark as fixed'),
+            label: const Text('Selesaikan — tandakan telah dibaiki'),
           ),
         ),
         const SizedBox(height: 12),
@@ -362,7 +365,7 @@ class _FrameSlideshowState extends State<FrameSlideshow> {
             borderRadius: BorderRadius.circular(999),
           ),
           child: Text(
-            'frame ${_i + 1}/${widget.urls.length}',
+            'bingkai ${_i + 1}/${widget.urls.length}',
             style: TextStyle(
                 fontSize: 11.5,
                 fontWeight: FontWeight.w600,
@@ -400,7 +403,7 @@ class _OpenForState extends State<_OpenFor> {
     final scheme = Theme.of(context).colorScheme;
     return StatusPill(
       label:
-          'Open for ${formatOpenFor(DateTime.now().difference(widget.reportedAt))}',
+          'Terbuka selama ${formatOpenFor(DateTime.now().difference(widget.reportedAt))}',
       bg: scheme.surfaceContainerHighest,
       fg: scheme.onSurfaceVariant,
       icon: Icons.timer_outlined,

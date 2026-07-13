@@ -4,6 +4,6 @@ const kSupabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
 const kRoleLabels = {
   'jkr_malaysia': 'JKR Malaysia',
   'jkr_selangor': 'JKR Selangor',
-  'local_council': 'Local Council (PBT)',
-  'highway': 'Highway Concessionaire',
+  'local_council': 'Majlis Tempatan (PBT)',
+  'highway': 'Konsesi Lebuh Raya',
 };

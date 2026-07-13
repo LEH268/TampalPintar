@@ -15,7 +15,7 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _index = 0;
 
-  static const _titles = ['Map', 'Pending', 'Leaderboard', 'Rewards', 'Settings'];
+  static const _titles = ['Peta', 'Menunggu', 'Papan Pendahulu', 'Ganjaran', 'Tetapan'];
 
   Widget _tab(int i) => switch (i) {
         0 => const MapScreen(),
@@ -45,23 +45,23 @@ class _HomeShellState extends State<HomeShell> {
             NavigationDestination(
                 icon: Icon(Icons.map_outlined),
                 selectedIcon: Icon(Icons.map),
-                label: 'Map'),
+                label: 'Peta'),
             NavigationDestination(
                 icon: Icon(Icons.pending_actions_outlined),
                 selectedIcon: Icon(Icons.pending_actions),
-                label: 'Pending'),
+                label: 'Menunggu'),
             NavigationDestination(
                 icon: Icon(Icons.leaderboard_outlined),
                 selectedIcon: Icon(Icons.leaderboard),
-                label: 'Leaderboard'),
+                label: 'Papan Pendahulu'),
             NavigationDestination(
                 icon: Icon(Icons.card_giftcard_outlined),
                 selectedIcon: Icon(Icons.card_giftcard),
-                label: 'Rewards'),
+                label: 'Ganjaran'),
             NavigationDestination(
                 icon: Icon(Icons.settings_outlined),
                 selectedIcon: Icon(Icons.settings),
-                label: 'Settings'),
+                label: 'Tetapan'),
           ],
         ),
       );

@@ -16,12 +16,12 @@ class AppNotifications {
   /// surface the failure instead of silently dropping the report.
   static Future<void> recordingFailed() => _plugin.show(
         id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        title: 'Could not record pothole',
-        body: 'No GPS fix. Check that location is on, then try again.',
+        title: 'Lubang jalan tidak dapat direkodkan',
+        body: 'Tiada kedudukan GPS. Pastikan lokasi dihidupkan, kemudian cuba lagi.',
         notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'pothole_events',
-            'Pothole events',
+            'Peristiwa lubang jalan',
             importance: Importance.high,
             priority: Priority.high,
             playSound: true,
@@ -36,12 +36,12 @@ class AppNotifications {
         // `id`/`title`/`body`/`notificationDetails` (older majors were
         // positional).
         id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        title: 'Pothole Recorded!',
-        body: 'Saved as a draft — review it in Pending Reports when parked.',
+        title: 'Lubang Jalan Direkodkan!',
+        body: 'Disimpan sebagai draf — semak dalam tab Menunggu apabila kenderaan berhenti.',
         notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'pothole_events',
-            'Pothole events',
+            'Peristiwa lubang jalan',
             importance: Importance.high,
             priority: Priority.high,
             playSound: true,

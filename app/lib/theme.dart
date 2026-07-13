@@ -256,23 +256,23 @@ ThemeData buildAppTheme(Brightness brightness) {
     return (
       bg: scheme.surfaceContainerHighest,
       fg: scheme.onSurfaceVariant,
-      label: 'Analysis pending',
+      label: 'Analisis dalam proses',
     );
   }
   if (score >= 80) {
-    return (bg: scheme.errorContainer, fg: scheme.onErrorContainer, label: 'Risk $score');
+    return (bg: scheme.errorContainer, fg: scheme.onErrorContainer, label: 'Risiko $score');
   }
   if (score >= 50) {
     return (
       bg: dark ? const Color(0xFF92400E) : const Color(0xFFFEF3C7),
       fg: dark ? const Color(0xFFFEF3C7) : const Color(0xFF92400E),
-      label: 'Risk $score',
+      label: 'Risiko $score',
     );
   }
   return (
     bg: dark ? const Color(0xFF065F46) : const Color(0xFFD1FAE5),
     fg: dark ? const Color(0xFFD1FAE5) : const Color(0xFF065F46),
-    label: 'Risk $score',
+    label: 'Risiko $score',
   );
 }
 
@@ -353,6 +353,6 @@ class BrandMark extends StatelessWidget {
         width: size,
         height: size,
         filterQuality: FilterQuality.medium,
-        semanticLabel: 'TampalPintar logo',
+        semanticLabel: 'Logo TampalPintar',
       );
 }

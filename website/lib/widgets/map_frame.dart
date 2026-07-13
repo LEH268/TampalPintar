@@ -49,7 +49,7 @@ class MapFrameState extends State<MapFrame> {
       if (!_ready && mounted) {
         setState(() {
           _failed = true;
-          _errorMsg = 'Map took too long to load.';
+          _errorMsg = 'Peta mengambil masa terlalu lama untuk dimuatkan.';
         });
       }
     });
@@ -72,7 +72,8 @@ class MapFrameState extends State<MapFrame> {
         if (mounted) {
           setState(() {
             _failed = true;
-            _errorMsg = 'Map failed to load: ${m['message'] ?? 'unknown error'}';
+            _errorMsg =
+                'Peta gagal dimuatkan: ${m['message'] ?? 'ralat tidak diketahui'}';
           });
         }
       }
@@ -134,10 +135,10 @@ class MapFrameState extends State<MapFrame> {
                                     .onErrorContainer),
                           ),
                           const SizedBox(height: 14),
-                          Text('Map unavailable',
+                          Text('Peta tidak tersedia',
                               style: Theme.of(context).textTheme.titleMedium),
                           const SizedBox(height: 6),
-                          Text(_errorMsg ?? 'Map failed to load.',
+                          Text(_errorMsg ?? 'Peta gagal dimuatkan.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Theme.of(context)
@@ -148,7 +149,7 @@ class MapFrameState extends State<MapFrame> {
                               onPressed: _retry,
                               icon:
                                   const Icon(Icons.refresh_rounded, size: 18),
-                              label: const Text('Retry')),
+                              label: const Text('Cuba Lagi')),
                         ],
                       ),
                     ),

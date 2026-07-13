@@ -1,9 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 const kVehicleOptions = {
-  'motorcycle': 'Motorcycle',
-  'car': 'Car',
-  'heavy_commercial': 'Heavy Commercial',
+  'motorcycle': 'Motosikal',
+  'car': 'Kereta',
+  'heavy_commercial': 'Perdagangan Berat',
 };
 
 class ProfileService {

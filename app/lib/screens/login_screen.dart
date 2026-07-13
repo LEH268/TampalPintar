@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Network error. Check your connection and try again.')));
+            content: Text('Ralat rangkaian. Semak sambungan anda dan cuba lagi.')));
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headlineMedium),
                   const SizedBox(height: 6),
-                  Text('Report potholes. Get them fixed.',
+                  Text('Laporkan lubang jalan. Pastikan ia dibaiki.',
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textInputAction: TextInputAction.next,
                     autofillHints: const [AutofillHints.email],
                     decoration: const InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'E-mel',
                       prefixIcon: Icon(Icons.mail_outline_rounded),
                     ),
                   ),
@@ -79,11 +79,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     autofillHints: const [AutofillHints.password],
                     onSubmitted: (_) => _busy ? null : _login(),
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Kata Laluan',
                       prefixIcon: const Icon(Icons.lock_outline_rounded),
                       suffixIcon: IconButton(
-                        tooltip:
-                            _showPassword ? 'Hide password' : 'Show password',
+                        tooltip: _showPassword
+                            ? 'Sembunyikan kata laluan'
+                            : 'Tunjukkan kata laluan',
                         icon: Icon(_showPassword
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined),
@@ -103,14 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 22,
                               child:
                                   CircularProgressIndicator(strokeWidth: 2.5))
-                          : const Text('Log in'),
+                          : const Text('Log Masuk'),
                     ),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
                     onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => const SignupScreen())),
-                    child: const Text('New here? Create an account'),
+                    child: const Text('Baru di sini? Cipta akaun'),
                   ),
                 ],
               ),

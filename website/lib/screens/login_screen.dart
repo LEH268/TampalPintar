@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (role == null || !kRoleLabels.containsKey(role)) {
         await client.auth.signOut();
         throw const AuthException(
-            'Citizen accounts cannot access the government dashboard.');
+            'Akaun rakyat tidak boleh mengakses papan pemuka kerajaan.');
       }
       govRoleVerified.value = true; // auth gate swaps to the dashboard
     } on AuthException catch (e) {
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // live but unverified session — sign it out so the gate can't be entered.
       await client.auth.signOut();
       rootMessengerKey.currentState
-          ?.showSnackBar(SnackBar(content: Text('Sign-in failed: $e')));
+          ?.showSnackBar(SnackBar(content: Text('Log masuk gagal: $e')));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: -0.5)),
                     const SizedBox(height: 4),
-                    Text('Government Dashboard — Selangor',
+                    Text('Papan Pemuka Kerajaan — Selangor',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: scheme.onSurfaceVariant)),
                     const SizedBox(height: 28),
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         textInputAction: TextInputAction.next,
                         autofillHints: const [AutofillHints.email],
                         decoration: const InputDecoration(
-                          labelText: 'Email',
+                          labelText: 'E-mel',
                           prefixIcon: Icon(Icons.mail_outline_rounded),
                         )),
                     const SizedBox(height: 12),
@@ -103,12 +103,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         autofillHints: const [AutofillHints.password],
                         onSubmitted: (_) => _busy ? null : _login(),
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'Kata Laluan',
                           prefixIcon: const Icon(Icons.lock_outline_rounded),
                           suffixIcon: IconButton(
                             tooltip: _showPassword
-                                ? 'Hide password'
-                                : 'Show password',
+                                ? 'Sembunyikan kata laluan'
+                                : 'Tunjukkan kata laluan',
                             icon: Icon(_showPassword
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility_outlined),
@@ -127,11 +127,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 20,
                                 child: CircularProgressIndicator(
                                     strokeWidth: 2.5))
-                            : const Text('Log in'),
+                            : const Text('Log Masuk'),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text('Authorized authority accounts only',
+                    Text('Akaun pihak berkuasa yang dibenarkan sahaja',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 12, color: scheme.onSurfaceVariant)),

@@ -8,7 +8,7 @@ class DrivingController {
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         channelId: 'driving',
-        channelName: 'Driving Mode',
+        channelName: 'Mod Memandu',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
       ),
@@ -44,9 +44,11 @@ class DrivingController {
     _init();
     await FlutterForegroundTask.startService(
       serviceId: 100,
-      notificationTitle: 'TampalPintar is listening',
-      notificationText: 'Say "Tampal Pintar" to record a pothole',
-      notificationButtons: [const NotificationButton(id: 'stop', text: 'Stop')],
+      notificationTitle: 'TampalPintar sedang mendengar',
+      notificationText: 'Sebut "Tampal Pintar" untuk merekodkan lubang jalan',
+      notificationButtons: [
+        const NotificationButton(id: 'stop', text: 'Berhenti')
+      ],
       callback: startDrivingCallback,
     );
   }

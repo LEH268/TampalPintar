@@ -5,8 +5,8 @@ import '../utils/elapsed.dart';
 const kRoleLabels = {
   'jkr_malaysia': 'JKR Malaysia',
   'jkr_selangor': 'JKR Selangor',
-  'local_council': 'Local Council (PBT)',
-  'highway': 'Highway Concessionaire',
+  'local_council': 'Majlis Tempatan (PBT)',
+  'highway': 'Konsesi Lebuh Raya',
 };
 
 class LeaderboardScreen extends StatelessWidget {
@@ -20,8 +20,8 @@ class LeaderboardScreen extends StatelessWidget {
             Material(
               color: Theme.of(context).colorScheme.surface,
               child: const TabBar(tabs: [
-                Tab(text: 'Top Reporters'),
-                Tab(text: 'Department Response'),
+                Tab(text: 'Pelapor Terbaik'),
+                Tab(text: 'Respons Jabatan'),
               ]),
             ),
             Expanded(
@@ -34,7 +34,7 @@ class LeaderboardScreen extends StatelessWidget {
                         leading: _RankBadge(rank: i + 1),
                         title: Text(rows[i]['display_name'] ?? ''),
                         trailing: Text(
-                          '${rows[i]['lifetime_points']} pts',
+                          '${rows[i]['lifetime_points']} mata',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -52,11 +52,11 @@ class LeaderboardScreen extends StatelessWidget {
                         leading: _RankBadge(rank: i + 1),
                         title: Text(kRoleLabels[rows[i]['role']] ??
                             rows[i]['role'].toString()),
-                        subtitle: Text('${rows[i]['fix_count']} fixed'),
+                        subtitle: Text('${rows[i]['fix_count']} dibaiki'),
                         trailing: Text(
                           rows[i]['avg_open_seconds'] == null
-                              ? 'no data yet'
-                              : 'avg ${formatOpenFor(Duration(seconds: (rows[i]['avg_open_seconds'] as num).round()))}',
+                              ? 'tiada data lagi'
+                              : 'purata ${formatOpenFor(Duration(seconds: (rows[i]['avg_open_seconds'] as num).round()))}',
                           style: const TextStyle(
                               fontSize: 13, fontWeight: FontWeight.w700),
                         ),
@@ -116,7 +116,7 @@ class _RpcList extends StatelessWidget {
                     Icon(Icons.cloud_off_rounded,
                         size: 36, color: scheme.onSurfaceVariant),
                     const SizedBox(height: 10),
-                    Text("Couldn't load the leaderboard",
+                    Text('Papan pendahulu tidak dapat dimuatkan',
                         style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 4),
                     Text('${snap.error}',
@@ -134,7 +134,7 @@ class _RpcList extends StatelessWidget {
           final tiles = builder(context, snap.data!);
           if (tiles.isEmpty) {
             return Center(
-                child: Text('No data yet',
+                child: Text('Tiada data lagi',
                     style: TextStyle(color: scheme.onSurfaceVariant)));
           }
           return ListView(

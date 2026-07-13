@@ -1,11 +1,11 @@
 {
-    "name": "TampalPintar Government",
-    "short_name": "TampalPintar Gov",
+    "name": "TampalPintar Kerajaan",
+    "short_name": "TampalPintar Kerajaan",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F8FAFC",
     "theme_color": "#1E40AF",
-    "description": "Government dashboard for reviewing, assigning, and completing pothole reports across Selangor.",
+    "description": "Papan pemuka kerajaan untuk menyemak, menugaskan, dan menyelesaikan laporan lubang jalan di seluruh Selangor.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

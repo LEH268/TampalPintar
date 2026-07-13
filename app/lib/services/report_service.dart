@@ -7,7 +7,7 @@ import '../models/report.dart';
 
 class DuplicateReportException implements Exception {
   @override
-  String toString() => 'An active report already exists within 10 meters.';
+  String toString() => 'Laporan aktif sudah wujud dalam lingkungan 10 meter.';
 }
 
 class ReportService {

@@ -71,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: TextButton.icon(
               onPressed: () => Supabase.instance.client.auth.signOut(),
               icon: const Icon(Icons.logout_rounded, size: 18),
-              label: const Text('Sign out'),
+              label: const Text('Log Keluar'),
             ),
           ),
         ],
@@ -103,11 +103,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 size: 30, color: scheme.onSurfaceVariant),
                           ),
                           const SizedBox(height: 16),
-                          Text('No report selected',
+                          Text('Tiada laporan dipilih',
                               style: Theme.of(context).textTheme.titleMedium),
                           const SizedBox(height: 6),
                           Text(
-                            'Select a red pin on the map to review, assign, and complete it.',
+                            'Pilih pin merah pada peta untuk menyemak, menugaskan dan menyelesaikannya.',
                             textAlign: TextAlign.center,
                             style: TextStyle(color: scheme.onSurfaceVariant),
                           ),

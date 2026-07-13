@@ -30,7 +30,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _loadError = 'Could not load your profile. Pull to retry.';
+        _loadError = 'Profil anda tidak dapat dimuatkan. Sila cuba lagi.';
         _loaded = true;
       });
       return;
@@ -51,7 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         defaultVehicleType: _vehicle);
     if (mounted) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Saved')));
+          .showSnackBar(const SnackBar(content: Text('Disimpan')));
     }
   }
 
@@ -77,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 });
                 _load();
               },
-              child: const Text('Retry'),
+              child: const Text('Cuba Lagi'),
             ),
           ],
         ),
@@ -89,32 +89,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            const SectionHeader('Profile', top: 0),
+            const SectionHeader('Profil', top: 0),
             TextField(
                 controller: _displayName,
                 decoration: const InputDecoration(
-                  labelText: 'Display name',
-                  helperText: 'Shown on the Top Reporters leaderboard',
+                  labelText: 'Nama Paparan',
+                  helperText: 'Dipaparkan pada papan pendahulu Pelapor Terbaik',
                   prefixIcon: Icon(Icons.person_outline_rounded),
                 )),
             const SizedBox(height: 12),
             TextField(
                 controller: _dashcamId,
                 decoration: const InputDecoration(
-                  labelText: 'Dashcam ID',
-                  helperText: 'Pairs your dashcam for hands-free reports',
+                  labelText: 'ID Dashcam',
+                  helperText: 'Memadankan dashcam anda untuk laporan bebas tangan',
                   prefixIcon: Icon(Icons.videocam_outlined),
                 )),
             const SizedBox(height: 12),
             DropdownButtonFormField<String?>(
               initialValue: _vehicle,
               decoration: const InputDecoration(
-                labelText: 'My Vehicle',
+                labelText: 'Kenderaan Saya',
                 prefixIcon: Icon(Icons.directions_car_outlined),
               ),
               items: [
                 const DropdownMenuItem<String?>(
-                    value: null, child: Text('None')),
+                    value: null, child: Text('Tiada')),
                 for (final e in kVehicleOptions.entries)
                   DropdownMenuItem<String?>(
                       value: e.key, child: Text(e.value)),
@@ -127,9 +127,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: FilledButton.icon(
                   onPressed: _save,
                   icon: const Icon(Icons.check_rounded, size: 20),
-                  label: const Text('Save changes')),
+                  label: const Text('Simpan Perubahan')),
             ),
-            const SectionHeader('Account'),
+            const SectionHeader('Akaun'),
             OutlinedButton.icon(
               style: OutlinedButton.styleFrom(
                 foregroundColor: scheme.error,
@@ -137,7 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               onPressed: () => Supabase.instance.client.auth.signOut(),
               icon: const Icon(Icons.logout_rounded, size: 20),
-              label: const Text('Log out'),
+              label: const Text('Log Keluar'),
             ),
           ],
         ),

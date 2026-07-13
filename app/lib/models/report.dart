@@ -43,8 +43,8 @@ class ReportDetails {
 }
 
 const kRoadTypeLabels = {
-  'highway_expressway': 'Highway/Expressway',
-  'federal_route': 'Federal Route',
-  'state_route': 'State Route',
-  'municipal_local': 'Municipal/Local Road',
+  'highway_expressway': 'Lebuh Raya/Ekspres',
+  'federal_route': 'Laluan Persekutuan',
+  'state_route': 'Laluan Negeri',
+  'municipal_local': 'Jalan Perbandaran/Tempatan',
 };

@@ -27,7 +27,7 @@ class _OpenForTickerState extends State<OpenForTicker> {
 
   @override
   Widget build(BuildContext context) => Text(
-        'Open for ${formatOpenFor(DateTime.now().difference(widget.reportedAt))}',
+        'Terbuka selama ${formatOpenFor(DateTime.now().difference(widget.reportedAt))}',
         style: const TextStyle(fontWeight: FontWeight.w600),
       );
 }

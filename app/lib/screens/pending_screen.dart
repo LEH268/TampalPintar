@@ -10,15 +10,15 @@ import '../services/profile_service.dart';
 import '../services/report_service.dart';
 
 const kLaneOptions = {
-  'left_slow': 'Left (slow)',
-  'middle': 'Middle',
-  'right_fast': 'Right (fast)',
-  'single_lane': 'Single-lane road',
+  'left_slow': 'Kiri (perlahan)',
+  'middle': 'Tengah',
+  'right_fast': 'Kanan (laju)',
+  'single_lane': 'Jalan satu lorong',
 };
 const kImpactOptions = {
-  'bump': 'Just a bump',
-  'swerve': 'Forced to swerve',
-  'damage': 'Hit it hard — damaged',
+  'bump': 'Sekadar hentakan',
+  'swerve': 'Terpaksa mengelak',
+  'damage': 'Terkena kuat — rosak',
 };
 
 class PendingScreen extends StatefulWidget {
@@ -59,14 +59,14 @@ class _PendingScreenState extends State<PendingScreen> {
       await _reports.submitDraft(d);
       await _store!.delete(d.id); // photos stay: the report references them
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Report submitted — pin added!')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Laporan dihantar — pin ditambah!')));
       }
     } on DuplicateReportException {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
-                'Already in the system: an active report exists within 10 m. You can discard this draft.')));
+                'Sudah ada dalam sistem: laporan aktif wujud dalam lingkungan 10 m. Anda boleh membuang draf ini.')));
       }
     }
     await _load();
@@ -126,7 +126,7 @@ class _PendingScreenState extends State<PendingScreen> {
         Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.schedule_rounded, size: 15, color: scheme.onSurfaceVariant),
           const SizedBox(width: 4),
-          Text(DateFormat('d MMM y, h:mm a').format(d.capturedAt.toLocal()),
+          Text(DateFormat('d MMM y, h:mm a', 'ms').format(d.capturedAt.toLocal()),
               style: style),
         ]),
         Row(mainAxisSize: MainAxisSize.min, children: [
@@ -184,7 +184,7 @@ class _PendingScreenState extends State<PendingScreen> {
                           color: scheme.secondary,
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Text('WAKE',
+                        child: Text('SERTA-MERTA',
                             style: TextStyle(
                                 fontSize: 9,
                                 fontWeight: FontWeight.w800,
@@ -217,11 +217,11 @@ class _PendingScreenState extends State<PendingScreen> {
                     size: 32, color: scheme.onSecondaryContainer),
               ),
               const SizedBox(height: 16),
-              Text('No pending reports',
+              Text('Tiada laporan menunggu',
                   style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 6),
               Text(
-                'Start driving and say "Tampal Pintar" to capture a report hands-free.',
+                'Mula memandu dan sebut "Tampal Pintar" untuk merakam laporan secara bebas tangan.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: scheme.onSurfaceVariant),
               ),
@@ -251,17 +251,17 @@ class _PendingScreenState extends State<PendingScreen> {
                       Icon(Icons.location_on_outlined,
                           size: 18, color: scheme.onSurfaceVariant),
                       const SizedBox(width: 6),
-                      Text('Location-only draft (no dashcam photos)',
+                      Text('Draf lokasi sahaja (tiada foto dashcam)',
                           style: TextStyle(color: scheme.onSurfaceVariant)),
                     ]),
                   const SizedBox(height: 10),
                   _metaRow(d),
                   const Divider(height: 24),
-                  _toggleRow(d, 'Vehicle Type', kVehicleOptions, d.vehicleType,
+                  _toggleRow(d, 'Jenis Kenderaan', kVehicleOptions, d.vehicleType,
                       (v) => d.vehicleType = v),
-                  _toggleRow(d, 'Lane Position', kLaneOptions, d.lanePosition,
+                  _toggleRow(d, 'Kedudukan Lorong', kLaneOptions, d.lanePosition,
                       (v) => d.lanePosition = v),
-                  _toggleRow(d, 'Impact Severity', kImpactOptions,
+                  _toggleRow(d, 'Tahap Impak', kImpactOptions,
                       d.impactSeverity, (v) => d.impactSeverity = v),
                   const SizedBox(height: 4),
                   Row(
@@ -271,12 +271,12 @@ class _PendingScreenState extends State<PendingScreen> {
                           style: TextButton.styleFrom(
                               foregroundColor: scheme.error),
                           onPressed: () => _discard(d),
-                          child: const Text('Discard')),
+                          child: const Text('Buang')),
                       const SizedBox(width: 8),
                       FilledButton.icon(
                           onPressed: () => _submit(d),
                           icon: const Icon(Icons.send_rounded, size: 18),
-                          label: const Text('Submit')),
+                          label: const Text('Hantar')),
                     ],
                   ),
                 ],

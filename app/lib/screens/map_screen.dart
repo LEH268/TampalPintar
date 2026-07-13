@@ -83,7 +83,7 @@ class _MapScreenState extends State<MapScreen> {
       if (!_mapReady && mounted) {
         setState(() {
           _mapFailed = true;
-          _mapErrorMessage = 'Map took too long to load.';
+          _mapErrorMessage = 'Peta mengambil masa terlalu lama untuk dimuatkan.';
         });
       }
     });
@@ -144,8 +144,8 @@ class _MapScreenState extends State<MapScreen> {
           perm == LocationPermission.deniedForever) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content:
-                  Text('Location permission is required to report a pothole.')));
+              content: Text(
+                  'Kebenaran lokasi diperlukan untuk melaporkan lubang jalan.')));
         }
         return;
       }
@@ -153,7 +153,8 @@ class _MapScreenState extends State<MapScreen> {
       if (pos == null) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Could not get a GPS fix. Please try again.')));
+              content:
+                  Text('Kedudukan GPS tidak dapat diperoleh. Sila cuba lagi.')));
         }
         return;
       }
@@ -162,20 +163,21 @@ class _MapScreenState extends State<MapScreen> {
           lat: pos.latitude,
           lng: pos.longitude);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Pothole reported — pin added!')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Lubang jalan dilaporkan — pin ditambah!')));
       }
       await _pushPins();
     } on DuplicateReportException {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
-                'Already in the system: an active report exists within 10 m.')));
+                'Sudah ada dalam sistem: laporan aktif wujud dalam lingkungan 10 m.')));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not report the pothole. Please try again.')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                'Lubang jalan tidak dapat dilaporkan. Sila cuba lagi.')));
       }
     }
   }
@@ -189,7 +191,7 @@ class _MapScreenState extends State<MapScreen> {
     if (!await DrivingController.requestPermissions()) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Microphone + location permissions are required.')));
+            content: Text('Kebenaran mikrofon + lokasi diperlukan.')));
       }
       return;
     }
@@ -211,13 +213,13 @@ class _MapScreenState extends State<MapScreen> {
     final String label;
     if (_dashcamId == null) {
       dot = scheme.onSurfaceVariant;
-      label = 'No dashcam';
+      label = 'Tiada dashcam';
     } else if (_dashcamConnected == true) {
       dot = successColor(context);
-      label = 'Dashcam connected';
+      label = 'Dashcam disambungkan';
     } else {
       dot = scheme.error;
-      label = 'Dashcam offline';
+      label = 'Dashcam luar talian';
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -279,11 +281,11 @@ class _MapScreenState extends State<MapScreen> {
                               color: scheme.onErrorContainer, size: 28),
                         ),
                         const SizedBox(height: 14),
-                        Text('Map unavailable',
+                        Text('Peta tidak tersedia',
                             style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 6),
                         Text(
-                          _mapErrorMessage ?? 'Map failed to load.',
+                          _mapErrorMessage ?? 'Peta gagal dimuatkan.',
                           style: TextStyle(color: scheme.onSurfaceVariant),
                           textAlign: TextAlign.center,
                         ),
@@ -291,7 +293,7 @@ class _MapScreenState extends State<MapScreen> {
                         FilledButton.icon(
                             onPressed: _retryMap,
                             icon: const Icon(Icons.refresh_rounded, size: 18),
-                            label: const Text('Retry')),
+                            label: const Text('Cuba Lagi')),
                       ],
                     ),
                   ),
@@ -314,12 +316,12 @@ class _MapScreenState extends State<MapScreen> {
                 onPressed: _toggleDriving,
                 icon: Icon(
                     _driving ? Icons.stop_rounded : Icons.drive_eta_rounded),
-                label: Text(_driving ? 'Stop Driving' : 'Start Driving'),
+                label: Text(_driving ? 'Berhenti Memandu' : 'Mula Memandu'),
               ),
               const SizedBox(height: 12),
               FloatingActionButton(
                 heroTag: 'photo',
-                tooltip: 'Report a pothole by photo',
+                tooltip: 'Laporkan lubang jalan melalui foto',
                 backgroundColor: scheme.secondaryContainer,
                 foregroundColor: scheme.onSecondaryContainer,
                 onPressed: _reportByPhoto,

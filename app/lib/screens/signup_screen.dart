@@ -41,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Network error. Check your connection and try again.')));
+            content: Text('Ralat rangkaian. Semak sambungan anda dan cuba lagi.')));
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -52,7 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('Create account')),
+      appBar: AppBar(title: const Text('Cipta Akaun')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -61,22 +61,22 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Join TampalPintar',
+                Text('Sertai TampalPintar',
                     style: Theme.of(context).textTheme.titleLarge),
                 const SizedBox(height: 4),
-                Text('Earn points every time a pothole you reported is fixed.',
+                Text('Kumpul mata setiap kali lubang jalan yang anda laporkan dibaiki.',
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
                         ?.copyWith(color: scheme.onSurfaceVariant)),
-                const SectionHeader('Account'),
+                const SectionHeader('Akaun'),
                 TextField(
                   controller: _email,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   autofillHints: const [AutofillHints.email],
                   decoration: const InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'E-mel',
                     prefixIcon: Icon(Icons.mail_outline_rounded),
                   ),
                 ),
@@ -87,11 +87,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   textInputAction: TextInputAction.next,
                   autofillHints: const [AutofillHints.newPassword],
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Kata Laluan',
                     prefixIcon: const Icon(Icons.lock_outline_rounded),
                     suffixIcon: IconButton(
-                      tooltip:
-                          _showPassword ? 'Hide password' : 'Show password',
+                      tooltip: _showPassword
+                          ? 'Sembunyikan kata laluan'
+                          : 'Tunjukkan kata laluan',
                       icon: Icon(_showPassword
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined),
@@ -100,13 +101,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                 ),
-                const SectionHeader('Profile'),
+                const SectionHeader('Profil'),
                 TextField(
                   controller: _displayName,
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
-                    labelText: 'Display name',
-                    helperText: 'Shown on the Top Reporters leaderboard',
+                    labelText: 'Nama Paparan',
+                    helperText: 'Dipaparkan pada papan pendahulu Pelapor Terbaik',
                     prefixIcon: Icon(Icons.person_outline_rounded),
                   ),
                 ),
@@ -114,8 +115,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 TextField(
                   controller: _dashcamId,
                   decoration: const InputDecoration(
-                    labelText: 'Dashcam ID (optional)',
-                    helperText: 'Pairs your dashcam for hands-free reports',
+                    labelText: 'ID Dashcam (pilihan)',
+                    helperText: 'Memadankan dashcam anda untuk laporan bebas tangan',
                     prefixIcon: Icon(Icons.videocam_outlined),
                   ),
                 ),
@@ -123,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 DropdownButtonFormField<String>(
                   initialValue: _vehicle,
                   decoration: const InputDecoration(
-                    labelText: 'My Vehicle (optional)',
+                    labelText: 'Kenderaan Saya (pilihan)',
                     prefixIcon: Icon(Icons.directions_car_outlined),
                   ),
                   items: [
@@ -142,7 +143,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             width: 22,
                             height: 22,
                             child: CircularProgressIndicator(strokeWidth: 2.5))
-                        : const Text('Create account'),
+                        : const Text('Cipta Akaun'),
                   ),
                 ),
               ],

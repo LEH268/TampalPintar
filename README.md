@@ -21,6 +21,43 @@ Projek ini terdiri daripada empat bahagian yang berkongsi satu backend Supabase:
   webhook) dan Deno Edge Functions (`analyze-report`, `dashcam-cleanup`) yang
   memanggil Gemini untuk pemarkahan risiko AI.
 
+## Aplikasi
+<div align="center">
+  <table>
+    <tr>
+      <th>Peta</th>
+      <th>Menunggu</th>
+      <th>Ranking</th>
+      <th>Ganjaran</th>
+      <th>Tetapan</th>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/Peta.png" alt="peta" style="width:240px;height:auto;" /></td>
+      <td align="center"><img src="assets/Menunggu.png" alt="menunggu" style="width:240px;height:auto;" /></td>
+      <td align="center"><img src="assets/Ranking.png" alt="ranking" style="width:240px;height:auto;" /></td>
+      <td align="center"><img src="assets/Ganjaran.png" alt="ganjaran" style="width:240px;height:auto;" /></td>
+      <td align="center"><img src="assets/Tetapan.png" alt="tetapan" style="width:240px;height:auto;" /></td>
+    </tr>
+  </table>
+</div>
+
+## Laman Web
+| Dashboard |
+|-----------|
+| ![dashboard](assets/Website.png) |
+
+## Dashcam
+<div align="center">
+  <table>
+    <tr>
+      <th>Peta</th>
+    </tr>
+    <tr>
+      <td align="center"><img src="assets/Dashcam.png" alt="dashcam" style="width:240px;height:auto;" /></td>
+    </tr>
+  </table>
+</div>
+
 ## Susun atur repo
 
 | Laluan | Apa |

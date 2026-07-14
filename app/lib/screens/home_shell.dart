@@ -15,7 +15,7 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _index = 0;
 
-  static const _titles = ['Peta', 'Menunggu', 'Papan Pendahulu', 'Ganjaran', 'Tetapan'];
+  static const _titles = ['Peta', 'Menunggu', 'Ranking', 'Ganjaran', 'Tetapan'];
 
   Widget _tab(int i) => switch (i) {
         0 => const MapScreen(),

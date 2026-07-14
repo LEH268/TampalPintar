@@ -24,19 +24,19 @@ Projek ini terdiri daripada empat bahagian yang berkongsi satu backend Supabase:
 ## Aplikasi
 <div align="center">
   <table>
-    <tr>
+    <tr valign="top">
       <th>Peta</th>
       <th>Menunggu</th>
       <th>Ranking</th>
       <th>Ganjaran</th>
       <th>Tetapan</th>
     </tr>
-    <tr>
-      <td align="center"><img src="assets/Peta.png" alt="peta" style="width:240px;height:auto;" /></td>
-      <td align="center"><img src="assets/Menunggu.png" alt="menunggu" style="width:240px;height:auto;" /></td>
-      <td align="center"><img src="assets/Ranking.png" alt="ranking" style="width:240px;height:auto;" /></td>
-      <td align="center"><img src="assets/Ganjaran.png" alt="ganjaran" style="width:240px;height:auto;" /></td>
-      <td align="center"><img src="assets/Tetapan.png" alt="tetapan" style="width:240px;height:auto;" /></td>
+    <tr valign="top">
+      <td align="center"><img src="assets/Peta.png" alt="peta" width="170" /></td>
+      <td align="center"><img src="assets/Menunggu.png" alt="menunggu" width="170" /></td>
+      <td align="center"><img src="assets/Ranking.png" alt="ranking" width="170" /></td>
+      <td align="center"><img src="assets/Ganjaran.png" alt="ganjaran" width="170" /></td>
+      <td align="center"><img src="assets/Tetapan.png" alt="tetapan" width="170" /></td>
     </tr>
   </table>
 </div>
@@ -50,7 +50,7 @@ Projek ini terdiri daripada empat bahagian yang berkongsi satu backend Supabase:
 <div align="center">
   <table>
     <tr>
-      <th>Peta</th>
+      <th>Dashcam</th>
     </tr>
     <tr>
       <td align="center"><img src="assets/Dashcam.png" alt="dashcam" style="width:240px;height:auto;" /></td>

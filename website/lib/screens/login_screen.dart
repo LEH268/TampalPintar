@@ -4,6 +4,23 @@ import '../config.dart';
 import '../session_state.dart';
 import '../theme.dart';
 
+/// Maps a login failure to a message that is safe to put in front of a user.
+///
+/// gotrue packs raw diagnostics into [AuthRetryableFetchException.message] — the
+/// underlying `ClientException` including the full backend URL on a network or
+/// CORS failure, and the raw response body on a 5xx. Neither belongs on screen,
+/// so retryable-fetch failures are answered with a generic connection message.
+/// Every other [AuthException] carries a curated message (gotrue's own, or the
+/// role rejection thrown below) and is passed through.
+@visibleForTesting
+String loginErrorMessage(Object error) {
+  if (error is AuthRetryableFetchException) {
+    return 'Ralat rangkaian. Semak sambungan anda dan cuba lagi.';
+  }
+  if (error is AuthException) return error.message;
+  return 'Log masuk gagal. Sila cuba lagi.';
+}
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -61,14 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       govRoleVerified.value = true; // auth gate swaps to the dashboard
     } on AuthException catch (e) {
+      debugPrint('Login failed: $e'); // detail stays in the console, not the UI
       rootMessengerKey.currentState
-          ?.showSnackBar(SnackBar(content: Text(e.message)));
+          ?.showSnackBar(SnackBar(content: Text(loginErrorMessage(e))));
     } catch (e) {
       // A non-auth failure (e.g. the profile lookup) after sign-in would leave a
       // live but unverified session — sign it out so the gate can't be entered.
       await client.auth.signOut();
+      debugPrint('Login failed: $e');
       rootMessengerKey.currentState
-          ?.showSnackBar(SnackBar(content: Text('Log masuk gagal: $e')));
+          ?.showSnackBar(SnackBar(content: Text(loginErrorMessage(e))));
     } finally {
       if (mounted) setState(() => _busy = false);
     }

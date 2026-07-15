@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; background: #0b0f14; }
+    gmp-map-3d { height: 100%; width: 100%; display: block; }
+  </style>
+</head>
+<body>
+  <gmp-map-3d id="map" mode="hybrid"
+    center="3.20,101.45,150" range="140000" tilt="55" heading="0">
+  </gmp-map-3d>
+  <script>
+    let mapEl = null;
+    let markerCtor = null;
+    let pinCtor = null;
+    let markers = [];
+    let pendingPins = null;
+
+    function sendToHost(msg) {
+      const s = JSON.stringify(msg);
+      if (window.PinTap) {
+        window.PinTap.postMessage(s);          // Android WebView JS channel
+      } else if (window.parent !== window) {
+        window.parent.postMessage(s, "*");     // website iframe bridge
+      }
+    }
+
+    window.setPins = function (json) {
+      const pins = (typeof json === "string") ? JSON.parse(json) : json;
+      if (!markerCtor) { pendingPins = pins; return; }
+      for (const m of markers) m.remove();
+      markers = [];
+      for (const p of pins) {
+        const marker = new markerCtor({
+          position: { lat: p.lat, lng: p.lng, altitude: 8 },
+          altitudeMode: "RELATIVE_TO_GROUND",
+          extruded: true,
+        });
+        try {
+          const pin = new pinCtor({
+            background: "#D32F2F", borderColor: "#7F0000",
+            glyphColor: "#FFFFFF", scale: 1.2,
+          });
+          marker.append(pin);
+        } catch (e) { /* default pin is fine */ }
+        marker.addEventListener("gmp-click", function () {
+          sendToHost({ type: "pinTap", id: p.id });
+        });
+        mapEl.append(marker);
+        markers.push(marker);
+      }
+    };
+
+    window.addEventListener("message", function (e) {
+      try {
+        const m = (typeof e.data === "string") ? JSON.parse(e.data) : e.data;
+        if (m && m.type === "setPins") window.setPins(m.pins);
+      } catch (err) { /* ignore non-JSON frames */ }
+    });
+
+    async function init() {
+      const [maps3d, markerLib] = await Promise.all([
+        google.maps.importLibrary("maps3d"),
+        google.maps.importLibrary("marker"),
+      ]);
+      markerCtor = maps3d.Marker3DInteractiveElement;
+      pinCtor    = markerLib.PinElement;
+      mapEl      = document.getElementById("map");
+      sendToHost({ type: "ready" });
+      if (pendingPins) { window.setPins(pendingPins); pendingPins = null; }
+    }
+
+    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await(a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+      key: "YOUR_GOOGLE_MAPS_API_KEY",
+      v: "alpha",
+    });
+    init().catch(function (err) {
+      sendToHost({ type: "error", message: String(err) });
+    });
+  </script>
+</body>
+</html>

@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+    <strong>Bahasa Malaysia</strong> · <a href="README.en.md">Bahasa Inggeris</a>
+</p>
+
+<p align="center">
     <img src="https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white" alt="Flutter"/>
     <img src="https://img.shields.io/badge/Dart-0175C2?style=flat&logo=dart&logoColor=white" alt="Dart"/>
     <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white" alt="Supabase"/>
@@ -612,11 +616,13 @@ flutter analyze
 cd website
 flutter pub get
 flutter run -d chrome
+flutter test
 flutter analyze
 ```
 
-Tiada ujian laman web automatik - pengesahan projek ini adalah manual
-(lihat [senarai semak demo](#14-senarai-semak-demo-hujung-ke-hujung-secara-manual)
+`flutter test` meliputi pengesahan sisi klien dan pengendalian ralat bagi
+skrin log masuk. Selain itu, pengesahan projek ini adalah manual (lihat
+[senarai semak demo](#14-senarai-semak-demo-hujung-ke-hujung-secara-manual)
 di bawah).
 
 ---

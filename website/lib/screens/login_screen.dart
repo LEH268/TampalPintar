@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _busy = false;
@@ -23,7 +24,24 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  String? _validateEmail(String? value) {
+    final email = value?.trim() ?? '';
+    if (email.isEmpty) return 'Sila masukkan e-mel.';
+    // Pragmatic shape check, not RFC 5322 — the server stays the real authority.
+    // This only spares the user a round-trip on an obvious typo.
+    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)) {
+      return 'Format e-mel tidak sah.';
+    }
+    return null;
+  }
+
+  // Presence only. A minimum length here would lock out existing accounts whose
+  // passwords predate the rule; password policy belongs at signup.
+  String? _validatePassword(String? value) =>
+      (value ?? '').isEmpty ? 'Sila masukkan kata laluan.' : null;
+
   Future<void> _login() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _busy = true);
     final client = Supabase.instance.client;
     try {
@@ -68,7 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(32),
-                child: Column(
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -87,21 +108,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(color: scheme.onSurfaceVariant)),
                     const SizedBox(height: 28),
-                    TextField(
+                    TextFormField(
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         autofillHints: const [AutofillHints.email],
+                        validator: _validateEmail,
                         decoration: const InputDecoration(
                           labelText: 'E-mel',
                           prefixIcon: Icon(Icons.mail_outline_rounded),
                         )),
                     const SizedBox(height: 12),
-                    TextField(
+                    TextFormField(
                         controller: _password,
                         obscureText: !_showPassword,
                         autofillHints: const [AutofillHints.password],
-                        onSubmitted: (_) => _busy ? null : _login(),
+                        validator: _validatePassword,
+                        onFieldSubmitted: (_) => _busy ? null : _login(),
                         decoration: InputDecoration(
                           labelText: 'Kata Laluan',
                           prefixIcon: const Icon(Icons.lock_outline_rounded),
@@ -136,6 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             fontSize: 12, color: scheme.onSurfaceVariant)),
                   ],
+                  ),
                 ),
               ),
             ),

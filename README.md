@@ -8,16 +8,28 @@
     <strong>Projek pelaporan lubang jalan untuk Selangor, Malaysia.</strong>
 </p>
 
+<p align="center">
+    <img src="https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white" alt="Flutter"/>
+    <img src="https://img.shields.io/badge/Dart-0175C2?style=flat&logo=dart&logoColor=white" alt="Dart"/>
+    <img src="https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white" alt="Supabase"/>
+    <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
+    <img src="https://img.shields.io/badge/Deno-000000?style=flat&logo=deno&logoColor=white" alt="Deno"/>
+    <img src="https://img.shields.io/badge/Gemini-8E75B2?style=flat&logo=googlegemini&logoColor=white" alt="Gemini"/>
+    <img src="https://img.shields.io/badge/Google_Maps-4285F4?style=flat&logo=googlemaps&logoColor=white" alt="Google Maps"/>
+    <img src="https://img.shields.io/badge/Arduino-00979D?style=flat&logo=arduino&logoColor=white" alt="Arduino"/>
+    <img src="https://img.shields.io/badge/ESP32-E7352C?style=flat&logo=espressif&logoColor=white" alt="ESP32"/>
+</p>
+
 Projek ini terdiri daripada empat bahagian yang berkongsi satu backend Supabase:
 
-- **`app/`** — Aplikasi Android Flutter untuk rakyat: laporan foto, serta
+- **`app/`** - Aplikasi Android Flutter untuk rakyat: laporan foto, serta
   laporan suara bebas tangan yang dicetuskan oleh kata bangkit ("wake word")
   khas "Tampal Pintar".
-- **`website/`** — Papan pemuka Flutter Web untuk empat peranan pihak
+- **`website/`** - Papan pemuka Flutter Web untuk empat peranan pihak
   berkuasa kerajaan (berjalan dalam Chrome).
-- **`firmware/tampal_pintar_cam/`** — Lakaran Arduino dashcam ESP32-CAM
+- **`firmware/tampal_pintar_cam/`** - Lakaran Arduino dashcam ESP32-CAM
   (papan AI-Thinker) yang menstrim foto ke Supabase Storage.
-- **`supabase/`** — migrasi pangkalan data (skema, RLS, RPC, storan, pencetus
+- **`supabase/`** - migrasi pangkalan data (skema, RLS, RPC, storan, pencetus
   webhook) dan Deno Edge Functions (`analyze-report`, `dashcam-cleanup`) yang
   memanggil Gemini untuk pemarkahan risiko AI.
 
@@ -80,7 +92,7 @@ Projek ini terdiri daripada empat bahagian yang berkongsi satu backend Supabase:
 3. [Cipta projek Supabase anda](#3-cipta-projek-supabase-anda)
 4. [Dapatkan kunci API Gemini](#4-dapatkan-kunci-api-gemini)
 5. [Dapatkan kunci API Google Maps](#5-dapatkan-kunci-api-google-maps)
-6. [Deploy backend — dengan atau tanpa Supabase CLI](#6-deploy-backend--dengan-atau-tanpa-supabase-cli)
+6. [Deploy backend - dengan atau tanpa Supabase CLI](#6-deploy-backend---dengan-atau-tanpa-supabase-cli)
 7. [Konfigurasikan pangkalan kod dengan kunci anda](#7-konfigurasikan-pangkalan-kod-dengan-kunci-anda)
 8. [Isikan data demo](#8-isikan-data-demo)
 9. [Sediakan Flutter dan jalankan aplikasi Android](#9-sediakan-flutter-dan-jalankan-aplikasi-android)
@@ -97,8 +109,8 @@ Projek ini terdiri daripada empat bahagian yang berkongsi satu backend Supabase:
 
 Akaun (peringkat percuma sudah memadai untuk semuanya):
 
-- Akaun **Supabase** — [supabase.com](https://supabase.com)
-- **Akaun Google** — digunakan untuk Google AI Studio (Gemini) dan Google
+- Akaun **Supabase** - [supabase.com](https://supabase.com)
+- **Akaun Google** - digunakan untuk Google AI Studio (Gemini) dan Google
   Cloud Console (Maps)
 
 Perisian untuk dipasang pada komputer anda (pautan dan langkah ada dalam
@@ -108,15 +120,15 @@ bahagian berkaitan di bawah, ini sekadar senarai semak):
 - [ ] [Flutter SDK](https://docs.flutter.dev/get-started/install) (repo ini
       dibina dengan kekangan Dart SDK `^3.9.2`, iaitu keluaran stabil
       Flutter yang terkini)
-- [ ] Android Studio (untuk Android SDK/emulator + pemacu USB) — hanya
+- [ ] Android Studio (untuk Android SDK/emulator + pemacu USB) - hanya
       diperlukan untuk `app/`
-- [ ] Google Chrome — digunakan untuk menjalankan `website/`
-- [ ] [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started) —
+- [ ] Google Chrome - digunakan untuk menjalankan `website/`
+- [ ] [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started) -
       pilihan; bahagian 6 juga mendokumenkan laluan Dashboard-sahaja tanpa CLI
-- [ ] [Arduino IDE](https://www.arduino.cc/en/software) — hanya diperlukan
+- [ ] [Arduino IDE](https://www.arduino.cc/en/software) - hanya diperlukan
       jika anda mempunyai perkakasan fizikal ESP32-CAM
 - [ ] Telefon Android dengan penyahpepijatan USB (USB debugging) diaktifkan,
-      atau emulator Android — hanya benar-benar diperlukan untuk bahagian
+      atau emulator Android - hanya benar-benar diperlukan untuk bahagian
       kata bangkit/mikrofon/GPS; aplikasi juga boleh dibina sebagai APK
 
 ---
@@ -132,19 +144,19 @@ cd TampalPintar
 
 ## 3. Cipta projek Supabase anda
 
-1. Pergi ke [supabase.com](https://supabase.com) dan log masuk (atau daftar —
+1. Pergi ke [supabase.com](https://supabase.com) dan log masuk (atau daftar -
    log masuk GitHub adalah pilihan terpantas).
 2. Klik **New project** (di penjuru kanan atas papan pemuka, atau daripada
    senarai projek sesebuah organisasi).
 3. Isikan:
    - **Name**: apa-apa sahaja, cth. `tampal-pintar`.
    - **Database Password**: jana yang kukuh dan **simpan di tempat yang
-     selamat** — anda memerlukannya sekali dalam langkah 6 dan jarang-jarang
+     selamat** - anda memerlukannya sekali dalam langkah 6 dan jarang-jarang
      selepas itu. Ini berbeza daripada mana-mana kunci API.
    - **Region**: pilih yang paling hampir dengan anda (cth. Singapura untuk
      Asia Tenggara).
-4. Klik **Create new project** dan tunggu 1–2 minit untuk penyediaan.
-5. Setelah projek sedia, kumpulkan empat nilai berikut — anda akan
+4. Klik **Create new project** dan tunggu 1-2 minit untuk penyediaan.
+5. Setelah projek sedia, kumpulkan empat nilai berikut - anda akan
    menampalnya ke dalam fail kemudian, jadi biarkan halaman ini terbuka atau
    salin nilai-nilai itu ke dalam fail teks sementara buat masa ini:
 
@@ -153,17 +165,17 @@ cd TampalPintar
    | **Project URL** | Projek → **Settings** (ikon gear, kiri bawah) → **Data API**. Kelihatan seperti `https://abcdefghijklmnop.supabase.co`. |
    | **Project Reference** | Bahagian subdomain Project URL di atas, cth. `abcdefghijklmnop`. Turut dipaparkan di **Settings → General**. |
    | **Kunci anon / public** | **Settings → API Keys**. Berlabel `anon` `public`. Rentetan panjang yang bermula dengan `eyJ...`. Selamat digunakan dalam aplikasi klien (itulah gunanya RLS). |
-   | **Kunci service_role** | Halaman yang sama, **API Keys**, berlabel `service_role`. ⚠️ Akses pentadbir penuh, memintas RLS — jangan sesekali letakkannya dalam kod `app/`, `website/`, atau firmware. Hanya digunakan di sisi pelayan (skrip pengisi data, ujian backend). |
+   | **Kunci service_role** | Halaman yang sama, **API Keys**, berlabel `service_role`. ⚠️ Akses pentadbir penuh, memintas RLS - jangan sesekali letakkannya dalam kod `app/`, `website/`, atau firmware. Hanya digunakan di sisi pelayan (skrip pengisi data, ujian backend). |
 
 6. Anda juga memerlukan **token akses peribadi** untuk Supabase CLI (berbeza
    daripada kunci API projek):
    - Klik avatar anda (kanan atas) → **Account preferences** → **Access
      Tokens** → **Generate new token**.
    - Namakannya apa-apa sahaja (cth. `tampal-pintar-cli`), salin nilai yang
-     dipaparkan (`sbp_...`) — ia hanya dipaparkan sekali sahaja.
+     dipaparkan (`sbp_...`) - ia hanya dipaparkan sekali sahaja.
 
 Simpan kelima-lima nilai itu (Project URL, project ref, kunci anon, kunci
-service_role, token akses peribadi) berserta kata laluan pangkalan data —
+service_role, token akses peribadi) berserta kata laluan pangkalan data -
 panduan seterusnya akan merujuk semula kepadanya sebagai **"project ref
 anda"**, **"kunci anon anda"**, dan sebagainya.
 
@@ -181,7 +193,7 @@ Edge Function `analyze-report` memanggil Gemini sekali bagi setiap laporan
 4. Salin kunci itu (bermula dengan `AIza...`).
 
 Kunci ini hanya ditetapkan sebagai **rahsia Supabase Edge Function**
-(langkah 6) — ia tidak pernah muncul dalam kod `app/`, `website/`, atau
+(langkah 6) - ia tidak pernah muncul dalam kod `app/`, `website/`, atau
 firmware, dan tidak sepatutnya dikomit ke mana-mana.
 
 ---
@@ -190,34 +202,34 @@ firmware, dan tidak sepatutnya dikomit ke mana-mana.
 
 Halaman peta 3D (`shared/map/map.html`) menggunakan **Maps JavaScript API**
 (saluran alpha, untuk perpustakaan `maps3d` 3D fotorealistik). Pilih satu
-daripada dua pilihan di bawah — kedua-duanya menghasilkan kunci `AIza...`
+daripada dua pilihan di bawah - kedua-duanya menghasilkan kunci `AIza...`
 yang sama jenis, dan ia diletakkan di tempat yang sama
-([langkah 7.4](#74-halaman-peta-3d--baris-77-dalam-3-salinan-serupa)).
+([langkah 7.4](#74-halaman-peta-3d---baris-77-dalam-3-salinan-serupa)).
 
-### Pilihan A — Kunci demo percuma (terpantas, tiada pengebilan/kad kredit diperlukan)
+### Pilihan A - Kunci demo percuma (terpantas, tiada pengebilan/kad kredit diperlukan)
 
 Google Maps Platform menerbitkan **kunci demo** tanpa kos yang memang
 bertujuan untuk pemprototaipan/penilaian seperti projek ini:
 
 1. Pergi ke [mapsplatform.google.com/maps-demo-key](https://mapsplatform.google.com/maps-demo-key/).
 2. Klik **Try for free**. Ini membuka konsol Google Cloud dan menyediakan
-   kunci demo untuk anda — hanya memerlukan akaun Google, tiada kad kredit
+   kunci demo untuk anda - hanya memerlukan akaun Google, tiada kad kredit
    dan tiada penyediaan pengebilan.
 3. Salin kunci yang dipaparkan (bermula dengan `AIza...`).
 
 Nota penting: kunci demo merangkumi satu himpunan API tetap yang termasuk
 **3D Maps** (tepat seperti yang digunakan oleh halaman peta projek ini),
 serta Dynamic Maps, Geocoding, Places, Routes, dan Weather. Ia mempunyai
-**had penggunaan harian bagi setiap API** — apabila anda melebihinya untuk
+**had penggunaan harian bagi setiap API** - apabila anda melebihinya untuk
 hari itu, peta hanya berhenti memberi respons sehingga hari berikutnya;
 anda tidak dikenakan bayaran. Ia secara jelas berskop untuk **pembangunan
 dan pengujian, bukan produksi**.
 
-### Pilihan B — Kunci anda sendiri melalui Google Cloud Console (disyorkan jika anda mahu kuota sendiri, tiada had harian, atau memerlukannya untuk jangka panjang)
+### Pilihan B - Kunci anda sendiri melalui Google Cloud Console (disyorkan jika anda mahu kuota sendiri, tiada had harian, atau memerlukannya untuk jangka panjang)
 
 1. Pergi ke [Google Cloud Console](https://console.cloud.google.com/).
 2. Cipta projek baharu (atau guna semula projek yang dicipta AI Studio dalam
-   langkah 4) — menu lungsur projek di kiri atas → **New Project**.
+   langkah 4) - menu lungsur projek di kiri atas → **New Project**.
 3. Aktifkan API: pergi ke **APIs & Services → Library**, cari **"Maps
    JavaScript API"**, klik padanya, klik **Enable**.
 4. Cipta kunci: **APIs & Services → Credentials → + Create Credentials →
@@ -226,7 +238,7 @@ dan pengujian, bukan produksi**.
    dan hadkannya kepada **Maps JavaScript API**, dan jika mahu, kepada nama
    pakej aplikasi / perujuk laman web anda setelah anda mengetahuinya. Kunci
    tanpa sekatan berfungsi baik untuk pembangunan setempat tetapi tidak
-   sepatutnya dibiarkan begitu dalam konfigurasi langsung repo awam — repo
+   sepatutnya dibiarkan begitu dalam konfigurasi langsung repo awam - repo
    ini hanya membekalkan nilai penempat (placeholder), jadi kunci setiap
    orang adalah hak masing-masing untuk disekat.
 6. Pastikan pengebilan diaktifkan pada projek Cloud itu. Maps JavaScript API
@@ -237,16 +249,16 @@ dan pengujian, bukan produksi**.
 
 ---
 
-## 6. Deploy backend — dengan atau tanpa Supabase CLI
+## 6. Deploy backend - dengan atau tanpa Supabase CLI
 
 Dua cara untuk memasang skema, RLS, RPC, polisi storan, pencetus webhook,
 dan kedua-dua Edge Functions ke projek anda. **Pilihan A lebih pantas** dan
 itulah yang diandaikan oleh seluruh README ini apabila ia menyebut arahan
-CLI secara sepintas lalu; **Pilihan B tidak memerlukan apa-apa pemasangan**
-— hanya pelayar anda dan Supabase Dashboard. Pilih satu; anda tidak
+CLI secara sepintas lalu; **Pilihan B tidak memerlukan apa-apa pemasangan** -
+hanya pelayar anda dan Supabase Dashboard. Pilih satu; anda tidak
 memerlukan kedua-duanya.
 
-### Pilihan A — Menggunakan Supabase CLI (disyorkan, lebih pantas)
+### Pilihan A - Menggunakan Supabase CLI (disyorkan, lebih pantas)
 
 Pasang CLI (pilih satu):
 
@@ -257,7 +269,7 @@ winget install Supabase.CLI   # Windows, melalui winget
 brew install supabase/tap/supabase   # macOS/Linux, melalui Homebrew
 ```
 
-Docker tidak diperlukan — setiap arahan di bawah berkomunikasi terus dengan
+Docker tidak diperlukan - setiap arahan di bawah berkomunikasi terus dengan
 projek terhos anda (`--use-api` / mod terpaut).
 
 Dari akar repo:
@@ -272,7 +284,7 @@ supabase link --project-ref <project ref anda>
 sebagai ganti sintaks PowerShell `$env:`.)
 
 **Sebelum menolak migrasi**, lakukan satu suntingan manual wajib yang
-diterangkan dalam bahagian seterusnya (langkah 7.3) — satu fail migrasi
+diterangkan dalam bahagian seterusnya (langkah 7.3) - satu fail migrasi
 memerlukan URL dan kunci anon projek anda sendiri dibenamkan ke dalamnya.
 Lakukannya sekarang, kemudian kembali ke sini dan jalankan:
 
@@ -280,7 +292,7 @@ Lakukannya sekarang, kemudian kembali ke sini dan jalankan:
 supabase db push --include-all
 ```
 
-`--include-all` adalah wajib — `supabase db push` biasa akan melangkau
+`--include-all` adalah wajib - `supabase db push` biasa akan melangkau
 sesetengah migrasi dalam projek ini secara senyap.
 
 Deploy Edge Functions:
@@ -298,25 +310,25 @@ supabase secrets set FAKE_EXTERNALS=1
 ```
 
 `FAKE_EXTERNALS=1` menjadikan suite ujian backend berkelakuan tentu
-(deterministik) — ia memalsukan Gemini/Weather/Geocoding dan bukannya
-memanggil perkhidmatan sebenar. Biarkan ia ditetapkan buat masa ini —
+(deterministik) - ia memalsukan Gemini/Weather/Geocoding dan bukannya
+memanggil perkhidmatan sebenar. Biarkan ia ditetapkan buat masa ini -
 [bahagian 13](#13-suis-hari-demo-fake_externals) menerangkan bila untuk
 menyahtetapkannya.
 
 Jika anda menggunakan Pilihan A, langkau terus ke
 [bahagian 7](#7-konfigurasikan-pangkalan-kod-dengan-kunci-anda).
 
-### Pilihan B — Tanpa Supabase CLI (Dashboard sahaja)
+### Pilihan B - Tanpa Supabase CLI (Dashboard sahaja)
 
 Semua yang dilakukan CLI di atas boleh dilakukan secara manual dalam
 Supabase Dashboard. Ia lebih banyak salin-tampal, tetapi tiada apa-apa yang
 perlu dipasang dan tiada langkah token akses/pemautan.
 
-**B.1 — Jalankan migrasi pangkalan data melalui SQL Editor**
+**B.1 - Jalankan migrasi pangkalan data melalui SQL Editor**
 
 `supabase/migrations/` mengandungi 10 fail `.sql` biasa yang mesti
 dijalankan **dalam susunan tepat ini** (setiap satu dibina di atas yang
-sebelumnya — jadual sebelum polisi RLS sebelum RPC, dan seterusnya):
+sebelumnya - jadual sebelum polisi RLS sebelum RPC, dan seterusnya):
 
 ```
 20260709000001_schema.sql
@@ -336,9 +348,9 @@ Bagi setiap fail, mengikut susunan:
 1. Buka fail itu secara setempat dalam penyunting teks dan salin
    keseluruhan kandungannya. **Khusus untuk
    `20260709000008_analyze_webhook.sql`**, lakukan dahulu suntingan yang
-   diterangkan dalam langkah 7.3 di bawah (bahagian 7) — gantikan nilai
+   diterangkan dalam langkah 7.3 di bawah (bahagian 7) - gantikan nilai
    penempat URL dan token Bearer dengan project ref dan kunci anon sebenar
-   anda — *kemudian* barulah salin kandungan yang telah disunting.
+   anda - *kemudian* barulah salin kandungan yang telah disunting.
 2. Dalam Supabase Dashboard, buka projek anda → **SQL Editor** (bar sisi
    kiri) → **New query**.
 3. Tampal kandungan fail ke dalam penyunting dan klik **Run** (atau
@@ -352,10 +364,10 @@ Jika `20260709000008_analyze_webhook.sql` menghasilkan ralat pada
 **Database → Extensions** (bar sisi kiri), cari **pg_net**, aktifkannya,
 kemudian jalankan semula fail itu.
 
-**B.2 — Deploy Edge Functions melalui penyunting terbina dalam Dashboard**
+**B.2 - Deploy Edge Functions melalui penyunting terbina dalam Dashboard**
 
 Kedua-dua fungsi dalam repo ini hanyalah satu fail setiap satu, jadi
-penyunting pelayar sudah memadai — tiada muat naik zip atau penggabungan
+penyunting pelayar sudah memadai - tiada muat naik zip atau penggabungan
 berbilang fail diperlukan:
 
 1. Pergi ke **Edge Functions** (bar sisi kiri) → **Deploy a new function** →
@@ -365,11 +377,11 @@ berbilang fail diperlukan:
    kandungan penuh `supabase/functions/analyze-report/index.ts` daripada
    repo ini.
 4. Klik **Deploy**.
-5. Ulang langkah 1–4 untuk fungsi kedua yang dinamakan tepat sebagai
+5. Ulang langkah 1-4 untuk fungsi kedua yang dinamakan tepat sebagai
    `dashcam-cleanup`, dengan menampal kandungan
    `supabase/functions/dashcam-cleanup/index.ts`.
 
-**B.3 — Tetapkan rahsia Edge Function melalui Dashboard**
+**B.3 - Tetapkan rahsia Edge Function melalui Dashboard**
 
 1. Masih di bawah **Edge Functions**, buka tab **Secrets** (sesetengah versi
    Dashboard melabelkannya **Manage secrets**).
@@ -389,7 +401,7 @@ berbilang fail diperlukan:
 
 Semua dari [bahagian 7](#7-konfigurasikan-pangkalan-kod-dengan-kunci-anda)
 dan seterusnya (pengisian data, menjalankan aplikasi/laman web, ujian)
-berfungsi sama sahaja tidak kira pilihan mana yang anda gunakan di sini —
+berfungsi sama sahaja tidak kira pilihan mana yang anda gunakan di sini -
 tiada satu pun daripadanya berkomunikasi dengan CLI, hanya dengan URL awam
 dan kunci projek anda.
 
@@ -401,12 +413,12 @@ Enam fail terjejak dalam repo ini dibekalkan dengan nilai **penempat**
 (placeholder). Gantikan setiap penempat di bawah dengan nilai sebenar yang
 anda kumpulkan dalam langkah 3 (dan langkah 5 untuk kunci Maps). Tiada satu
 pun fail ini diabaikan git (git-ignored), jadi jangan komit rahsia sebenar
-ke dalamnya jika repo ini bersifat awam — itulah tepatnya yang README ini
+ke dalamnya jika repo ini bersifat awam - itulah tepatnya yang README ini
 bantu anda elakkan dengan menyimpan rahsia *sebenar* hanya dalam fail
 setempat anda yang diabaikan git `API Key Configuration.md` / pemboleh ubah
 persekitaran / rahsia CLI.
 
-### 7.1 `app/lib/config.dart` — baris 2–3
+### 7.1 `app/lib/config.dart` - baris 2-3
 
 ```dart
 const kSupabaseUrl = 'https://YOUR_PROJECT_REF.supabase.co';    // baris 2
@@ -417,7 +429,7 @@ Gantikan `YOUR_PROJECT_REF` dengan project ref anda dan
 `YOUR_SUPABASE_ANON_KEY` dengan kunci anon anda (kedua-duanya dari
 langkah 3).
 
-### 7.2 `website/lib/config.dart` — baris 2–3
+### 7.2 `website/lib/config.dart` - baris 2-3
 
 Dua pemalar yang sama, nilai yang sama, nombor baris yang sama:
 
@@ -426,7 +438,7 @@ const kSupabaseUrl = 'https://YOUR_PROJECT_REF.supabase.co';    // baris 2
 const kSupabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';               // baris 3
 ```
 
-### 7.3 `supabase/migrations/20260709000008_analyze_webhook.sql` — baris 11 dan 14, lakukan ini **sebelum** `supabase db push`
+### 7.3 `supabase/migrations/20260709000008_analyze_webhook.sql` - baris 11 dan 14, lakukan ini **sebelum** `supabase db push`
 
 Migrasi ini memasang pencetus Postgres yang memanggil Edge Function
 `analyze-report` melalui `pg_net` setiap kali laporan dimasukkan. Postgres
@@ -447,11 +459,11 @@ Gantikan kedua-dua penempat (URL di baris 11, token Bearer di baris 14)
 dengan project ref dan kunci anon anda, simpan fail itu, **kemudian**
 jalankan `supabase db push --include-all` (langkah 6). Jika anda menolak
 migrasi sebelum menyunting fail ini, pencetus itu akan gagal secara senyap
-(ia akan membuat POST ke hos yang tidak wujud) — jalankan semula
+(ia akan membuat POST ke hos yang tidak wujud) - jalankan semula
 `supabase db push --include-all` selepas membetulkannya; migrasi di sini
 bersifat idempoten.
 
-### 7.4 Halaman peta 3D — baris 77 dalam 3 salinan serupa
+### 7.4 Halaman peta 3D - baris 77 dalam 3 salinan serupa
 
 Halaman peta sengaja diduplikasi (lihat
 [nota seni bina](#nota-seni-bina-tiada-perkongsian) di bawah): sunting fail
@@ -463,7 +475,7 @@ kekal serupa bait demi bait.
    key: "YOUR_GOOGLE_MAPS_API_KEY",
    ```
    dan gantikan dengan kunci Google Maps anda dari langkah 5. (Baris yang
-   sama, 77, juga memegang penempat dalam dua salinan di bawah — sebaik
+   sama, 77, juga memegang penempat dalam dua salinan di bawah - sebaik
    sahaja anda menyalin fail ini ke atasnya, semuanya akan sejajar secara
    automatik.)
 2. Salin fail itu ke atas kedua-dua lokasi lain:
@@ -473,12 +485,12 @@ kekal serupa bait demi bait.
    ```
    (macOS/Linux: `cp shared/map/map.html app/assets/map/map.html && cp shared/map/map.html website/web/map.html`)
 
-### 7.5 Blok konfigurasi firmware — baris 18–19, hanya jika anda mempunyai perkakasan ESP32-CAM
+### 7.5 Blok konfigurasi firmware - baris 18-19, hanya jika anda mempunyai perkakasan ESP32-CAM
 
 Diliputi sepenuhnya dalam
 [bahagian 11](#11-sediakan-arduino-ide-dan-flash-esp32-cam); dua nilai
 Supabase yang sama dimasukkan ke dalam
-`firmware/tampal_pintar_cam/tampal_pintar_cam.ino`, baris 18–19:
+`firmware/tampal_pintar_cam/tampal_pintar_cam.ino`, baris 18-19:
 
 ```cpp
 const char* SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";  // baris 18
@@ -489,7 +501,7 @@ const char* SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";           // baris 19
 
 ## 8. Isikan data demo
 
-Idempoten — selamat dijalankan semula pada bila-bila masa.
+Idempoten - selamat dijalankan semula pada bila-bila masa.
 
 ```
 cd tools\seed
@@ -512,7 +524,7 @@ Ini mencipta akaun demo (kata laluan untuk semua: `TampalPintar#2026`):
 | `highway@tampalpintar.demo` | Konsesi Lebuh Raya (Lebuh Raya Ekspres) |
 
 Ini ialah kelayakan demo tetap yang dibenamkan dalam skrip pengisi data itu
-sendiri (`tools/seed/bin/seed.dart`) — ia hanya wujud dalam projek Supabase
+sendiri (`tools/seed/bin/seed.dart`) - ia hanya wujud dalam projek Supabase
 **anda sendiri** setelah anda menjalankan pengisi data, jadi tiada akaun
 kongsi/awam di sini.
 
@@ -527,7 +539,7 @@ kongsi/awam di sini.
    Pada Windows ini biasanya: muat turun zip Flutter SDK, ekstrak (cth. ke
    `C:\src\flutter`), tambah `C:\src\flutter\bin` ke `PATH` anda.
 2. Pasang **Android Studio** ([developer.android.com/studio](https://developer.android.com/studio))
-   — diperlukan untuk Android SDK, alatan platform (`adb`), dan emulator
+   - diperlukan untuk Android SDK, alatan platform (`adb`), dan emulator
    jika anda tidak mempunyai telefon fizikal.
 3. Sahkan semuanya:
    ```
@@ -540,7 +552,7 @@ kongsi/awam di sini.
 
 ### 9.2 Dapatkan peranti
 
-**Pilihan A — telefon Android fizikal (wajib untuk ciri kata
+**Pilihan A - telefon Android fizikal (wajib untuk ciri kata
 bangkit/mikrofon dan GPS langsung benar-benar berfungsi):**
 
 1. Pada telefon: **Settings → About phone** → ketik **Build number**
@@ -550,7 +562,7 @@ bangkit/mikrofon dan GPS langsung benar-benar berfungsi):**
    USB debugging?" pada telefon.
 4. Sahkan ia dikesan: `flutter devices` sepatutnya menyenaraikannya.
 
-**Pilihan B — emulator Android (memadai untuk pengujian UI/peta/laporan
+**Pilihan B - emulator Android (memadai untuk pengujian UI/peta/laporan
 foto; kata bangkit mikrofon tidak akan mempunyai sumber audio sebenar):**
 
 1. Dalam Android Studio: **Tools → Device Manager → Create device**, pilih
@@ -603,7 +615,7 @@ flutter run -d chrome
 flutter analyze
 ```
 
-Tiada ujian laman web automatik — pengesahan projek ini adalah manual
+Tiada ujian laman web automatik - pengesahan projek ini adalah manual
 (lihat [senarai semak demo](#14-senarai-semak-demo-hujung-ke-hujung-secara-manual)
 di bawah).
 
@@ -613,7 +625,7 @@ di bawah).
 
 Hanya diperlukan jika anda mempunyai papan fizikal **AI-Thinker ESP32-CAM**
 (dan, kebiasaannya, penyesuai FTDI/USB-serial berasingan untuk
-memprogramnya — kebanyakan papan ESP32-CAM tiada port USB terbina).
+memprogramnya - kebanyakan papan ESP32-CAM tiada port USB terbina).
 
 ### 11.1 Pasang Arduino IDE
 
@@ -630,7 +642,7 @@ memprogramnya — kebanyakan papan ESP32-CAM tiada port USB terbina).
 3. **Tools → Board → Boards Manager**, cari **"esp32"**, pasang pakej yang
    diterbitkan oleh **Espressif Systems**.
 
-Satu pakej ini membekalkan semua yang diperlukan lakaran — `WiFi.h`,
+Satu pakej ini membekalkan semua yang diperlukan lakaran - `WiFi.h`,
 `WiFiClientSecure.h`, `HTTPClient.h`, `esp_camera.h`, dan `time.h`
 semuanya sebahagian daripada teras ESP32/pemacu kamera. Tiada pemasangan
 Library Manager berasingan diperlukan untuk projek ini.
@@ -650,38 +662,38 @@ const char* SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
 - `WIFI_SSID` / `WIFI_PASS`: tetapkan supaya sepadan dengan hotspot mudah
   alih yang akan anda hidupkan daripada telefon yang menjalankan aplikasi
-  rakyat — ESP32-CAM menyertai hotspot itu, ia tidak memerlukan Wi-Fi rumah
+  rakyat - ESP32-CAM menyertai hotspot itu, ia tidak memerlukan Wi-Fi rumah
   anda.
 - `DASHCAM_ID`: mesti sepadan dengan `dashcam_id` pada profil rakyat (skrip
   pengisi data menetapkan milik `aisyah@tampalpintar.demo` kepada
-  `DEMO-CAM-01`, sepadan dengan nilai lalai di sini — ubah kedua-duanya
+  `DEMO-CAM-01`, sepadan dengan nilai lalai di sini - ubah kedua-duanya
   serentak jika anda menggunakan profil lain).
 - `SUPABASE_URL` / `SUPABASE_ANON_KEY`: project ref dan kunci anon anda dari
   langkah 3, nilai yang sama seperti di tempat lain dalam bahagian ini.
 
-### 11.4 Bekalan kuasa dan pengaturcara — pilih satu
+### 11.4 Bekalan kuasa dan pengaturcara - pilih satu
 
 AI-Thinker ESP32-CAM tiada port USB terbina dan tiada pengatur voltan
 terbina yang cukup baik untuk menjalankan kamera dengan stabil daripada
 sesetengah sumber 5V, jadi ia memerlukan papan berasingan untuk membekalkan
 kuasa dan mendedahkan sambungan USB-serial untuk flash. Dua pilihan:
 
-**Pilihan A — ESP32-CAM Mother Board / papan pengaturcara (disyorkan)**
+**Pilihan A - ESP32-CAM Mother Board / papan pengaturcara (disyorkan)**
 
 Papan pecahan kecil (biasa dijual sebagai "ESP32-CAM-MB" atau "ESP32-CAM
 Programmer") yang ESP32-CAM boleh dipasang terus padanya. Ia membekalkan
-kuasa melalui USB dan menguruskan pendawaian UART + auto-reset untuk anda —
+kuasa melalui USB dan menguruskan pendawaian UART + auto-reset untuk anda -
 tiada wayar pelompat, tiada bekalan kuasa berasingan, tiada perlu menogol
 IO0 secara manual.
 
-1. Pasang ESP32-CAM pada kepala pin mother board itu (orientasi penting —
+1. Pasang ESP32-CAM pada kepala pin mother board itu (orientasi penting -
    padankan penanda cetakan sutera pada papan khusus anda; kamera biasanya
    menghadap menjauhi penyambung USB).
 2. Sambungkan mother board ke komputer anda dengan kabel Micro-USB. Ini
    membekalkan kuasa kepada papan sekaligus mendedahkannya sebagai port
    bersiri.
 3. Windows memerlukan pemacu USB-ke-serial untuk cip yang digunakan mother
-   board anda (biasanya CH340 atau CP2102) — Windows Update kebiasaannya
+   board anda (biasanya CH340 atau CP2102) - Windows Update kebiasaannya
    memasangnya secara automatik kali pertama anda menyambungkannya; jika
    papan tidak muncul di bawah **Tools → Port**, cari "pemacu <CH340 atau
    CP2102>" untuk OS anda.
@@ -690,23 +702,23 @@ IO0 secara manual.
    tamat masa pada "Connecting...", periksa penanda papan khusus anda untuk
    butang **RESET** atau **BOOT** dan tahan seketika apabila IDE mula memuat
    naik.
-5. Tiada penyesuai kuasa berasingan diperlukan — port USB membekalkannya,
+5. Tiada penyesuai kuasa berasingan diperlukan - port USB membekalkannya,
    untuk flash mahupun operasi biasa selagi ia kekal dipalamkan ke sumber
    kuasa USB (pengecas telefon + kabel berfungsi baik setelah anda selesai
    flash dan hanya mahu ia berjalan sebagai dashcam).
 
-**Pilihan B — kuasa luaran + penyesuai FTDI/USB-TTL**
+**Pilihan B - kuasa luaran + penyesuai FTDI/USB-TTL**
 
 Jika anda tiada mother board, dawaikan penyesuai FTDI/USB-TTL biasa terus
 ke pin ESP32-CAM (papan bertoleransi logik 5V, atau gunakan penyesuai 3.3V):
 
 | ESP32-CAM | Penyesuai |
 |---|---|
-| 5V | 5V (atau pin 3.3V jika menggunakan penyesuai 3.3V ke rel 3.3V papan — semak dokumentasi papan khusus anda) |
+| 5V | 5V (atau pin 3.3V jika menggunakan penyesuai 3.3V ke rel 3.3V papan - semak dokumentasi papan khusus anda) |
 | GND | GND |
 | U0R (RX) | TX |
 | U0T (TX) | RX |
-| IO0 | GND (**hanya semasa flash** — ini meletakkan cip ke dalam mod pemuat but) |
+| IO0 | GND (**hanya semasa flash** - ini meletakkan cip ke dalam mod pemuat but) |
 
 Untuk flash: sambungkan IO0 ke GND, tekan butang **RESET** papan (atau
 kitar kuasanya), kemudian muat naik daripada IDE. Selepas muat naik
@@ -722,7 +734,7 @@ membekalkan arus yang mencukupi untuk kamera dalam jangka panjang.
 2. **Tools → Port** → pilih port COM yang dipaparkan oleh mother board atau
    penyesuai anda.
 3. **Tools → Partition Scheme** → pilih satu dengan ruang aplikasi yang
-   mencukupi, cth. *"Huge APP (3MB No OTA/1MB SPIFFS)"* — skema lalai
+   mencukupi, cth. *"Huge APP (3MB No OTA/1MB SPIFFS)"* - skema lalai
    kadangkala terlalu kecil untuk kamera + tindanan TLS.
 4. Klik **Upload** (atau **Verify** dahulu untuk sekadar menyemak
    kompilasi).
@@ -738,7 +750,7 @@ arduino-cli upload -p <PORT_COM> --fqbn esp32:esp32:esp32cam firmware/tampal_pin
 ### 11.6 But pertama
 
 Buka **Serial Monitor** IDE (baud 115200) selepas but/reset biasa (bukan
-semasa ditahan dalam mod pemuat but — jika anda menggunakan helah
+semasa ditahan dalam mod pemuat but - jika anda menggunakan helah
 IO0-ke-GND Pilihan B, putuskannya dahulu). Anda sepatutnya melihatnya
 menyertai hotspot, menyegerakkan masa NTP, membersihkan sebarang foto
 tertinggal daripada larian sebelumnya, kemudian mula menstrim
@@ -753,10 +765,10 @@ ESP32 sedang memuat naik.
 ### 12.1 Ujian integrasi backend ("Seam 1")
 
 Ujian ini berjalan terhadap **projek Supabase terhos langsung anda** dengan
-data demo yang telah diisi — ia adalah ujian integrasi, bukan ujian unit
+data demo yang telah diisi - ia adalah ujian integrasi, bukan ujian unit
 terpencil/olokan.
 
-1. Cipta `tools/backend_tests/test_config.json` (diabaikan git — anda cipta
+1. Cipta `tools/backend_tests/test_config.json` (diabaikan git - anda cipta
    fail ini sendiri, ia tidak dibekalkan bersama repo):
    ```json
    {
@@ -801,7 +813,7 @@ python check.py drive.wav  # atau rakaman sebenar frasa itu, 16 kHz mono 16-bit
 
 ## 13. Suis hari demo: `FAKE_EXTERNALS`
 
-Suite ujian backend (12.1) memerlukan external **palsu** — pengganti
+Suite ujian backend (12.1) memerlukan external **palsu** - pengganti
 deterministik untuk Gemini/Weather/Geocoding, supaya ujian tidak rapuh atau
 terkena had kadar. Demo langsung sebenar (atau sekadar untuk melihat skor
 risiko Gemini sebenar) memerlukan integrasi **sebenar**. Hanya satu boleh
@@ -845,7 +857,7 @@ kedua-dua aplikasi serta laman web dikonfigurasi dengan kunci anda:
    7 foto dihantar ke Gemini; skor ≥ 80 menugaskannya secara automatik
    kepada pihak berkuasa).
 6. Pada laman web, setiap peranan kerajaan hanya melihat pinnya sendiri;
-   tayangan slaid pin terasa seperti rakaman dashcam; **Tugaskan** (sehala —
+   tayangan slaid pin terasa seperti rakaman dashcam; **Tugaskan** (sehala -
    dialog menamakan pihak berkuasa) → **Selesaikan** menukarkannya hijau →
    pengesahan membuatkan pin lenyap di mana-mana; mata pelapor melonjak
    sebanyak Skor Risiko; kedua-dua papan pendahulu dikemas kini.
@@ -857,26 +869,26 @@ kedua-dua aplikasi serta laman web dikonfigurasi dengan kunci anda:
 
 ## 15. Penyelesaian masalah
 
-- **`supabase db push` seakan-akan melangkau migrasi** — anda hampir pasti
+- **`supabase db push` seakan-akan melangkau migrasi** - anda hampir pasti
   terlupa `--include-all`. Jalankan semula dengannya.
 - **Laporan tidak pernah mendapat skor risiko / tersekat pada
-  `risk_score IS NULL`** — kemungkinan besar anda menolak migrasi sebelum
+  `risk_score IS NULL`** - kemungkinan besar anda menolak migrasi sebelum
   menyunting `supabase/migrations/20260709000008_analyze_webhook.sql`
   (langkah 7.3). Suntingnya dengan project ref + kunci anon sebenar anda dan
   jalankan `supabase db push --include-all` sekali lagi.
-- **Peta dipaparkan kosong / ralat JS dalam konsol pelayar** — kunci Google
+- **Peta dipaparkan kosong / ralat JS dalam konsol pelayar** - kunci Google
   Maps yang tidak sah atau tanpa-sekatan-tetapi-tanpa-pengebilan gagal
   **secara senyap** dalam pemuat `maps3d` alpha halaman ini. Semak semula:
   kunci ditampal dengan betul dalam ketiga-tiga salinan `map.html` (7.4),
   Maps JavaScript API diaktifkan pada projek Cloud itu, dan pengebilan
   diaktifkan pada projek Cloud itu.
-- **Ujian backend gagal dengan ralat auth/rangkaian** — semak nilai
+- **Ujian backend gagal dengan ralat auth/rangkaian** - semak nilai
   `tools/backend_tests/test_config.json` terhadap kunci API semasa projek
   anda (Settings → API Keys boleh berputar), dan sahkan `FAKE_EXTERNALS=1`
   ditetapkan sebagai rahsia.
-- **`flutter doctor` merungut tentang lesen Android** — jalankan
+- **`flutter doctor` merungut tentang lesen Android** - jalankan
   `flutter doctor --android-licenses` dan terimanya.
-- **ESP32-CAM tidak mahu flash** — jika menggunakan Pilihan B (penyesuai
+- **ESP32-CAM tidak mahu flash** - jika menggunakan Pilihan B (penyesuai
   FTDI), sahkan IO0 diikat ke GND *hanya* semasa muat naik; jika menggunakan
   Pilihan A (mother board), cuba tahan butang RESET/BOOT-nya semasa IDE
   memaparkan "Connecting...". Apa pun, sahkan anda memilih port COM yang
@@ -887,7 +899,7 @@ kedua-dua aplikasi serta laman web dikonfigurasi dengan kunci anda:
 
 ## Nota seni bina: tiada perkongsian
 
-Tiada pakej Dart yang dikongsi antara `app/` dan `website/` — definisi model
+Tiada pakej Dart yang dikongsi antara `app/` dan `website/` - definisi model
 diduplikasi antara kedua-duanya dengan sengaja (keputusan produk yang
 disengajakan, bukan kelalaian). Kekalkan kedua-dua belah konsisten secara
 berasingan dan bukannya cuba mengekstrak pakej kongsi.
